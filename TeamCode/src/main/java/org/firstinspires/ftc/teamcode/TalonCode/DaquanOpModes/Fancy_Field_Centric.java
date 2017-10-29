@@ -123,6 +123,9 @@ public class Fancy_Field_Centric extends OpMode {
                 break;
 
             case TURNING_STATE:
+
+                //Add target angle to telemetry fo debugging
+                telemetry.addData("Target Angle", Math.toDegrees(targetAngle));
                 //This is the angle that the right joystick is pointing in
                 inputAngle = Math.atan2(-gamepad1.right_stick_y, gamepad1.right_stick_x);
                 telemetry.addData("Joystick Direction", Math.toDegrees(inputAngle));
