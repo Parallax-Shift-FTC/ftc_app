@@ -176,6 +176,8 @@ public class Fancy_Field_Centric extends OpMode {
                 //Exits out of turning if b is pressed
                 if(gamepad1.b)
                     currentState = FIELD_CENTRIC_STATE;
+
+                break;
         }
     }
 
