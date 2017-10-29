@@ -104,8 +104,8 @@ public class TestingTeleopTank_Iterative extends OpMode{
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left = -gamepad1.left_stick_y;
         right = -gamepad1.right_stick_y;
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.leftDrive.setPower(left);
+        robot.rightDrive.setPower(right);
 
         // Use gamepad left & right Bumpers to open and close the claw
         if (gamepad1.right_bumper)
@@ -120,11 +120,11 @@ public class TestingTeleopTank_Iterative extends OpMode{
 
         // Use gamepad buttons to move the arm up (Y) and down (A)
         if (gamepad1.y)
-            robot.armMotor.setPower(robot.ARM_UP_POWER);
+            robot.leftArm.setPower(robot.ARM_UP_POWER);
         else if (gamepad1.a)
-            robot.armMotor.setPower(robot.ARM_DOWN_POWER);
+            robot.leftArm.setPower(robot.ARM_DOWN_POWER);
         else
-            robot.armMotor.setPower(0.0);
+            robot.leftArm.setPower(0.0);
 
         // Send telemetry message to signify robot running;
         telemetry.addData("claw",  "Offset = %.2f", clawOffset);

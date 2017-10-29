@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.GeneralCode.TeleOpTemplates.HolonomicOpMod
 centric Drive.
  */
 
-@TeleOp(name = "Holonomic Robot-Centric Tele-Op Erik", group = "holonomic Erik")
+@TeleOp(name = "Holonomic RobotCentric Tele-Op Erik", group = "holonomic Erik")
 public class Holonomic_RobotCentric_TeleOp_Erik extends OpMode
 {
     org.firstinspires.ftc.teamcode.GeneralCode.TeleOpTemplates.HolonomicOpModes.Holonomic_Hardware robot;

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 Tests the Dpad Functions moving rotating (just top and right as of now)
  */
 @Disabled
-@TeleOp(name = "Holonomic Field-Centric Tele-Op Test 3", group = "holonomic Erik")
+@TeleOp(name = "Holonomic Field-Centric Tele-Op Test 31", group = "holonomic Erik")
 public class Holonomic_FieldCentric_Erik_NewControls3 extends OpMode
 {
     Holonomic_Hardware robot;

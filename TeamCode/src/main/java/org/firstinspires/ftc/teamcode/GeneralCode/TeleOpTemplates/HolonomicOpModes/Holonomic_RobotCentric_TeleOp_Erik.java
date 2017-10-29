@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 centric Drive.
  */
 @Disabled
-@TeleOp(name = "Holonomic Robot-Centric Tele-Op Erik", group = "holonomic Erik")
+@TeleOp(name = "Holonomic RobotCentric Tele-Op Erik1", group = "holonomic Erik")
 public class Holonomic_RobotCentric_TeleOp_Erik extends OpMode
 {
     Holonomic_Hardware robot;

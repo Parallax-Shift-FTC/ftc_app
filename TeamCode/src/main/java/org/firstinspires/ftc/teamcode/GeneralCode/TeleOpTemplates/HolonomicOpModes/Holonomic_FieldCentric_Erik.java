@@ -28,7 +28,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
                          I have not yet thought of a practical use for it.
  */
 @Disabled
-@TeleOp(name = "Holonomic Field-Centric Tele-Op Erik", group = "holonomic Erik")
+@TeleOp(name = "Holonomic Field-Centric Tele-Op Erik1", group = "holonomic Erik")
 public class Holonomic_FieldCentric_Erik extends OpMode
 {
     Holonomic_Hardware robot;

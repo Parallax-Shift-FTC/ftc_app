@@ -30,7 +30,7 @@ package org.firstinspires.ftc.teamcode.GeneralCode.TeleOpTemplates.HolonomicOpMo
                          I have not yet thought of a practical use for it.
  */
 @Disabled
-@TeleOp(name = "Holonomic Field-Centric Tele-Op Talon", group = "holonomic Talon")
+@TeleOp(name = "Holonomic Field-Centric Tele-Op Talon1", group = "holonomic Talon")
 public class Holonomic_FieldCentric_TeleOp extends OpMode
 {
     Holonomic_Hardware robot;

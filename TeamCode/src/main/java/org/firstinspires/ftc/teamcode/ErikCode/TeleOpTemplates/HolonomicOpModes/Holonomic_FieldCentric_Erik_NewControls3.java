@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.ErikCode.TeleOpTemplates.HolonomicOpModes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 Tests the Dpad Functions moving rotating (just top and right as of now)
  */
 
-@TeleOp(name = "Holonomic Field-Centric Tele-Op Test 3", group = "holonomic Erik")
+@TeleOp(name = "Holonomic FieldCentric Tele-Op Test 3", group = "holonomic Erik")
 public class Holonomic_FieldCentric_Erik_NewControls3 extends OpMode
 {
     Holonomic_Hardware robot;

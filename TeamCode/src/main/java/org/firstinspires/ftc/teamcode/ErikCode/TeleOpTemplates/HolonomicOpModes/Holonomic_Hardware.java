@@ -24,7 +24,7 @@ public class    Holonomic_Hardware {
     public DcMotor fleft, fright, bleft, bright;
     public BNO055IMU gyro;
     public double heading;
-    public double dp = 1.0f; //Drive Power (range = 0-1)
+    public double dp = 0.4f; //Drive Power (range = 0-1)
     private HardwareMap hwMap;
     private Telemetry telemetry;
     public ElapsedTime time = new ElapsedTime();
@@ -75,7 +75,7 @@ public class    Holonomic_Hardware {
 
     public void updateGyro() {
         //May not have to make negative? Make it so that turning is CCW
-         heading =  gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + Math.PI/2;
+         heading =  gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + 3*Math.PI/2;
     }
 
     double ClipValue(double value) {

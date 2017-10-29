@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 Program where using the bumpers makes it robot centric
  */
 @Disabled
-@TeleOp(name = "Holonomic Field-Centric Tele-Op Test 2", group = "holonomic Erik")
+@TeleOp(name = "Holonomic Field-Centric Tele-Op Test 21", group = "holonomic Erik")
 public class Holonomic_FieldCentric_Erik_NewControls2 extends OpMode
 {
     Holonomic_Hardware robot;
