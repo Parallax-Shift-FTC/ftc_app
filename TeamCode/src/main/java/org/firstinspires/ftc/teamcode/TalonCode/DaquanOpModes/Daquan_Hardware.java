@@ -51,6 +51,12 @@ public class Daquan_Hardware {
 
         //rurricane.setDirection(DcMotor.Direction.REVERSE);
 
+        //Sets the motors to run based on speed and not power
+        fleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         //Sets up the gyro sensor if necessary
         if(usesGyro) {
             gyro = hwMap.get(BNO055IMU.class, "imu");

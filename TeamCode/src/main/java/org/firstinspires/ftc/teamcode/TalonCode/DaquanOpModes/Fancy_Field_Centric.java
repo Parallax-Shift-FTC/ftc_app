@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.TalonCode.DaquanOpModes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "Talon's Field Centric", group = "Daquan")
+@TeleOp(name = "Talon's Fancy Field Centric", group = "Daquan")
 public class Fancy_Field_Centric extends OpMode {
 
     Daquan_Hardware robot;
@@ -13,6 +13,7 @@ public class Fancy_Field_Centric extends OpMode {
     static final int FIELD_CENTRIC_STATE = 0;
     static final int ROBOT_CENTRIC_STATE = 1;
     static final int DPAD_STATE = 2;
+    static final int START_STATE = 3;
 
     //Target angle for turning
     double targetAngle;
@@ -78,6 +79,9 @@ public class Fancy_Field_Centric extends OpMode {
                     targetAngle = Math.PI;
                     currentState = DPAD_STATE;
                 }
+                //If start is pressed it goes to the "start state", which turns the robot's front to face its current direction of motion;
+                else if(gamepad1.start)
+                    currentState = START_STATE;
                 //If the right bumper is held it will go to the robot centric state
                 else if(gamepad1.right_bumper)
                     currentState = ROBOT_CENTRIC_STATE;
@@ -118,14 +122,14 @@ public class Fancy_Field_Centric extends OpMode {
                 break;
 
             case DPAD_STATE:
-                //Slows the turning once teh robot is within 5 degrees of its target
+                //Slows the turning once the robot is within 5 degrees of its target
                 if(Math.abs(robot.heading - targetAngle) > Math.toRadians(5))
                     turningSpeed = 1;
                 else
                     turningSpeed = 0.2;
 
                 //Turns the robot if it isn't within .5 degrees of its target angle, otherwise sets the state back to field centric
-                if(robot.heading > targetAngle + Math.toRadians(.5) || robot.heading < targetAngle - Math.toRadians(.5))
+                if(Math.abs(robot.heading - targetAngle) > Math.toRadians(.5))
                     robot.turn(Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading), turningSpeed);
                 else
                     currentState = FIELD_CENTRIC_STATE;
@@ -135,6 +139,43 @@ public class Fancy_Field_Centric extends OpMode {
                     currentState = FIELD_CENTRIC_STATE;
 
                 break;
+
+            case START_STATE:
+                //This is the angle that the right joystick is pointing in
+                inputAngle = Math.atan2(-gamepad1.right_stick_y, gamepad1.right_stick_x);
+                telemetry.addData("Joystick Direction", Math.toDegrees(inputAngle));
+
+                //This is the magnitude of how far the joystick is pushed
+                inputPower = Math.sqrt(gamepad1.right_stick_x * gamepad1.right_stick_x + gamepad1.right_stick_y * gamepad1.right_stick_y);
+                telemetry.addData("Joystick Magnitude", inputPower);
+
+                if (inputPower > 1)
+                    inputPower = 1;
+
+                //This is the angle at which the robot should translate
+                moveAngle = inputAngle + (ANGLE_FROM_DRIVER - robot.heading);
+
+                //If the robot isn't within .5 degrees of the target angle, it drives in a field centric fashion while turning
+                if(Math.abs(robot.heading - moveAngle) > Math.toRadians(.5)) {
+                    //Sets the turning speed and direction based on how close the robot is to the target angle
+                    if (Math.abs(robot.heading - moveAngle) > Math.toRadians(5))
+                        turningSpeed = .5 * Math.abs(moveAngle - robot.heading) / (targetAngle - robot.heading);
+                    else
+                        turningSpeed = 0.2 * Math.abs(moveAngle - robot.heading) / (targetAngle - robot.heading);
+
+                    robot.drive(
+                            (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 - turningSpeed,
+                            (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower / 2 + turningSpeed,
+                            (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower / 2 - turningSpeed,
+                            (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 + turningSpeed
+                    );
+                }
+                else
+                    currentState = FIELD_CENTRIC_STATE;
+
+                //Exits out of turning if b is pressed
+                if(gamepad1.b)
+                    currentState = FIELD_CENTRIC_STATE;
         }
     }
 
