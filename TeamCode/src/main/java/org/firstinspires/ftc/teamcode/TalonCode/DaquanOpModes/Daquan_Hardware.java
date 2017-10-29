@@ -82,16 +82,14 @@ public class Daquan_Hardware {
         bright.setPower(br);
     }
 
-    //A shortcut for turning the robot; for direction clockwise is -1 and counter-clockwise is 1
-    public void turn(double direction, double power) {
-        fleft.setPower(- direction * power);
-        fright.setPower(direction * power);
-        bleft.setPower(- direction * power);
-        bright.setPower(direction * power);
-    }
-
     //Updates the heading variable; Normally add Pi/2 but this subtracts Pi/2 because the gyro sensor is backwards
     public void updateGyro() {
         heading = gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle - Math.PI / 2;
+
+        //
+        if(heading > Math.PI)
+            heading = heading - Math.PI;
+        if(heading <= - Math.PI)
+            heading = heading + Math.PI;
     }
 }

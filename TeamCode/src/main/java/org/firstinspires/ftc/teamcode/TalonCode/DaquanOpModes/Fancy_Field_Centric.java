@@ -12,8 +12,7 @@ public class Fancy_Field_Centric extends OpMode {
     int currentState = 0;
     static final int FIELD_CENTRIC_STATE = 0;
     static final int ROBOT_CENTRIC_STATE = 1;
-    static final int DPAD_STATE = 2;
-    static final int START_STATE = 3;
+    static final int TURNING_STATE = 2;
 
     //Target angle for turning
     double targetAngle;
@@ -65,23 +64,25 @@ public class Fancy_Field_Centric extends OpMode {
                 //If the dpad is pressed it will go to the turning state and set the target angle
                 if(gamepad1.dpad_up) {
                     targetAngle = Math.PI / 2;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                 else if(gamepad1.dpad_right) {
                     targetAngle = 0;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                 else if(gamepad1.dpad_down) {
                     targetAngle = - Math.PI / 2;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                 else if(gamepad1.dpad_left) {
                     targetAngle = Math.PI;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                 //If start is pressed it goes to the "start state", which turns the robot's front to face its current direction of motion;
-                else if(gamepad1.start)
-                    currentState = START_STATE;
+                else if(gamepad1.start) {
+                    targetAngle = moveAngle;
+                    currentState = TURNING_STATE;
+                }
                 //If the right bumper is held it will go to the robot centric state
                 else if(gamepad1.right_bumper)
                     currentState = ROBOT_CENTRIC_STATE;
@@ -101,46 +102,27 @@ public class Fancy_Field_Centric extends OpMode {
                 //If the dpad is pressed it will go to the turning state and set the target angle
                 if(gamepad1.dpad_up) {
                     targetAngle = Math.PI / 2;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                 else if(gamepad1.dpad_right) {
                     targetAngle = 0;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                 else if(gamepad1.dpad_down) {
                     targetAngle = - Math.PI / 2;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                 else if(gamepad1.dpad_left) {
                     targetAngle = Math.PI;
-                    currentState = DPAD_STATE;
+                    currentState = TURNING_STATE;
                 }
                     //If the right bumper is no longer held down it will go to the field centric state
-                else if(gamepad1.right_bumper)
-                    currentState = ROBOT_CENTRIC_STATE;
-
-                break;
-
-            case DPAD_STATE:
-                //Slows the turning once the robot is within 5 degrees of its target
-                if(Math.abs(robot.heading - targetAngle) > Math.toRadians(5))
-                    turningSpeed = 1;
-                else
-                    turningSpeed = 0.2;
-
-                //Turns the robot if it isn't within .5 degrees of its target angle, otherwise sets the state back to field centric
-                if(Math.abs(robot.heading - targetAngle) > Math.toRadians(.5))
-                    robot.turn(Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading), turningSpeed);
-                else
-                    currentState = FIELD_CENTRIC_STATE;
-
-                //If B is pressed it will go back to the field centric state
-                if (gamepad1.b)
+                else if(!gamepad1.right_bumper)
                     currentState = FIELD_CENTRIC_STATE;
 
                 break;
 
-            case START_STATE:
+            case TURNING_STATE:
                 //This is the angle that the right joystick is pointing in
                 inputAngle = Math.atan2(-gamepad1.right_stick_y, gamepad1.right_stick_x);
                 telemetry.addData("Joystick Direction", Math.toDegrees(inputAngle));
@@ -155,13 +137,14 @@ public class Fancy_Field_Centric extends OpMode {
                 //This is the angle at which the robot should translate
                 moveAngle = inputAngle + (ANGLE_FROM_DRIVER - robot.heading);
 
-                //If the robot isn't within .5 degrees of the target angle, it drives in a field centric fashion while turning
-                if(Math.abs(robot.heading - moveAngle) > Math.toRadians(.5)) {
+                //If the robot isn't within 1 degree of the target angle, it drives in a field centric fashion while turning
+                if(Math.abs(robot.heading - targetAngle) > Math.toRadians(1)) {
+
                     //Sets the turning speed and direction based on how close the robot is to the target angle
-                    if (Math.abs(robot.heading - moveAngle) > Math.toRadians(5))
-                        turningSpeed = .5 * Math.abs(moveAngle - robot.heading) / (targetAngle - robot.heading);
+                    if (Math.abs(robot.heading - targetAngle) > Math.toRadians(10))
+                        turningSpeed = .5 * Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading);
                     else
-                        turningSpeed = 0.2 * Math.abs(moveAngle - robot.heading) / (targetAngle - robot.heading);
+                        turningSpeed = 0.2 * Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading);
 
                     robot.drive(
                             (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 - turningSpeed,
@@ -179,8 +162,17 @@ public class Fancy_Field_Centric extends OpMode {
 
                 break;
         }
-    }
 
+        //Tells the driver the current state
+        if(currentState == FIELD_CENTRIC_STATE)
+            telemetry.addData("State", "Field Centric");
+        else if(currentState == ROBOT_CENTRIC_STATE)
+            telemetry.addData("State", "Robot Centric");
+        else if(currentState == TURNING_STATE)
+            telemetry.addData("State", "Turning");
+        else
+            telemetry.addData("State", "???");
+}
     //Clips the values given to the motors so that they don't go over 1
     double clipValue(double value) {
         if(value > robot.DRIVE_POWER || value < - robot.DRIVE_POWER)
