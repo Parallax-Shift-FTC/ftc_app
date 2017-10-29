@@ -28,6 +28,7 @@ public class    Holonomic_Hardware {
     private HardwareMap hwMap;
     private Telemetry telemetry;
     public ElapsedTime time = new ElapsedTime();
+    double currentDrivePower;
 
     //Constructor; Put program's hardwaremap first, then telemetry,  then put true if gyro will be used or false if it won't
     public Holonomic_Hardware(HardwareMap hwmap, Telemetry telem, boolean usesGyro){
@@ -75,7 +76,7 @@ public class    Holonomic_Hardware {
 
     public void updateGyro() {
         //May not have to make negative? Make it so that turning is CCW
-         heading =  gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + 3*Math.PI/2;
+         heading =  gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle;
     }
 
     double ClipValue(double value) {

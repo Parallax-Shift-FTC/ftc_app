@@ -12,7 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
@@ -23,7 +23,7 @@ public class VuforiaOpModeMovementTest extends LinearOpMode {
     public static final String TAG = "Vuforia VuMark Sample";
 
     OpenGLMatrix lastLocation = null;
-    VuforiaLocalizer vuforia;
+    ClosableVuforiaLocalizer vuforia;
 
     DcMotor fleft;
     DcMotor fright;
@@ -42,10 +42,10 @@ public class VuforiaOpModeMovementTest extends LinearOpMode {
         bleft.setDirection(DcMotor.Direction.REVERSE);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        ClosableVuforiaLocalizer.Parameters parameters = new ClosableVuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "Aa07QPX/////AAAAGT4IBGftwkAmodz5uX1NKehqWSuZYAizMXyJgDjbMQz+h5mPdKPRRA9id11R2ad9e3w3E6aS1Nep0aXgwwqRtAAmh6tizyQQZRM5qF+foaOh9zbuyAis/ANMODT0X5fAo3J6DqPNlOT9Es04EMKR5rIGhrb91rn3X+ferq2phtQ/PhQGHt44rkhNXSI1OV2GaY4BErnIgSktLZB6bWf49Jd3RtnybC9BfsuOv/2re0pEiGAiF+GyTV5pvuyVVFXFMKaiIR+aDe8qBpKV5z+ZUIWUC+z989ERqh9SKWdfJkOJt6glYFx/fEy3o4g8HwYfVbU+xU1fxufN+M3A2uZZaSSowVbbDDgr9CGxSd6/Dskg";
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+        parameters.cameraDirection = ClosableVuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = new ClosableVuforiaLocalizer(parameters);
 
 
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
@@ -89,6 +89,7 @@ public class VuforiaOpModeMovementTest extends LinearOpMode {
                     fright.setPower(0);
                     bleft.setPower(0);
                     fleft.setPower(0);
+                    vuforia.close();
                 }
                 else if(vuMark == RelicRecoveryVuMark.CENTER)
                 {
@@ -101,6 +102,7 @@ public class VuforiaOpModeMovementTest extends LinearOpMode {
                     fright.setPower(0);
                     bleft.setPower(0);
                     fleft.setPower(0);
+                    vuforia.close();
                 }
                 else if(vuMark == RelicRecoveryVuMark.RIGHT)
                 {
@@ -113,6 +115,7 @@ public class VuforiaOpModeMovementTest extends LinearOpMode {
                     fright.setPower(0);
                     bleft.setPower(0);
                     fleft.setPower(0);
+                    vuforia.close();
                 }
                 else
                 {
@@ -130,6 +133,4 @@ public class VuforiaOpModeMovementTest extends LinearOpMode {
     String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
-
-
 }

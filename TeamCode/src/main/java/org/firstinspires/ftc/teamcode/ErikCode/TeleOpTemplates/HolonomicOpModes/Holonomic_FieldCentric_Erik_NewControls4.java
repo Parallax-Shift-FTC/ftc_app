@@ -12,12 +12,14 @@ Tests the Dpad Functions moving rotating (just top and right as of now)
 public class Holonomic_FieldCentric_Erik_NewControls4 extends OpMode
 {
     Holonomic_Hardware robot;
-    double angleFromDriver = Math.PI/2;
+    double angleFromDriver = Math.PI;
     double jTheta;
     double jp;
     double theta;
     boolean robotCentric = false;
-    double z = 0.3;
+    boolean shouldTurn = false;
+    double desiredHeading;
+    float turnspeed;
 
     @Override
     public void init ()
@@ -30,6 +32,27 @@ public class Holonomic_FieldCentric_Erik_NewControls4 extends OpMode
     {
         robot.updateGyro();
 
+        if(gamepad1.dpad_up && !shouldTurn)
+        {
+            shouldTurn = true;
+            desiredHeading = 0;
+            if(robot.heading > desiredHeading) {
+                turnspeed = .2f;
+            }
+            else if(robot.heading < desiredHeading)
+            {
+                turnspeed = -.2f;
+            }
+        }
+        else if(gamepad1.b)
+            shouldTurn = false;
+
+        if(robot.heading > desiredHeading-Math.PI/6 && robot.heading < desiredHeading+Math.PI/6)
+          shouldTurn = false;
+
+        if(robot.heading == desiredHeading)
+            shouldTurn = false;
+
         jTheta = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
 
         jp = Math.sqrt(gamepad1.left_stick_x * gamepad1.left_stick_x + gamepad1.left_stick_y * gamepad1.left_stick_y);
@@ -39,39 +62,22 @@ public class Holonomic_FieldCentric_Erik_NewControls4 extends OpMode
 
         theta = (jTheta + angleFromDriver - robot.heading);
 
-        robot.drive(
-                (Math.sin(theta)+Math.cos(theta))*jp/2 - gamepad1.right_stick_x,
-                (Math.sin(theta)-Math.cos(theta))*jp/2 + gamepad1.right_stick_x,
-                (Math.sin(theta)-Math.cos(theta))*jp/2 - gamepad1.right_stick_x,
-                (Math.sin(theta)+Math.cos(theta))*jp/2 + gamepad1.right_stick_x
-        );
-
-        if(gamepad1.dpad_up)
+        if(!shouldTurn) {
+            robot.drive(
+                    (Math.sin(theta) + Math.cos(theta)) * jp / 2 - gamepad1.right_stick_x,
+                    (Math.sin(theta) - Math.cos(theta)) * jp / 2 + gamepad1.right_stick_x,
+                    (Math.sin(theta) - Math.cos(theta)) * jp / 2 - gamepad1.right_stick_x,
+                    (Math.sin(theta) + Math.cos(theta)) * jp / 2 + gamepad1.right_stick_x
+            );
+        }
+        else if(shouldTurn)
         {
-            if(robot.heading > Math.PI/2 && robot.heading <=3*Math.PI/2) {
-                while (robot.heading > Math.PI / 2) {
-                    robot.updateGyro();
-                    robot.drive(
-                            -z,
-                            z,
-                            -z,
-                            z
-                    );
-                }
-            }
-            else if(robot.heading != Math.PI/2)
-            {
-                while((robot.heading >= 3*Math.PI/2 && robot.heading <= Math.PI*2) || (robot.heading > 0 && robot.heading < Math.PI/2))
-                {
-                    robot.updateGyro();
-                    robot.drive(
-                            z,
-                            -z,
-                            z,
-                            -z
-                    );
-                }
-            }
+            robot.drive(
+                    (Math.sin(theta) + Math.cos(theta)) * jp / 2 - turnspeed,
+                    (Math.sin(theta) - Math.cos(theta)) * jp / 2 + turnspeed,
+                    (Math.sin(theta) - Math.cos(theta)) * jp / 2 - turnspeed,
+                    (Math.sin(theta) + Math.cos(theta)) * jp / 2 + turnspeed
+            );
         }
 
         telemetry.addData("Ultra Turbo Mode Activated", gamepad1.right_bumper && gamepad1.left_bumper);
@@ -81,5 +87,8 @@ public class Holonomic_FieldCentric_Erik_NewControls4 extends OpMode
         telemetry.addData("Gyro Heading", robot.heading);
         telemetry.addData("robotCentric", robotCentric);
         telemetry.addData("tophat up", gamepad1.dpad_up);
+        telemetry.addData("Desired Heading", desiredHeading);
+        telemetry.addData("Turn Speed", turnspeed);
+        telemetry.addData("Should Turn", shouldTurn);
     }
 }
