@@ -25,7 +25,8 @@ public class Daquan_Hardware {
 
     //Public variables for other programs to utilize
     public double heading;
-    public static final double DRIVE_POWER = 0.3;
+    public double currentDrivePower = .5;
+    public static final double DRIVE_POWER = 0.5;
     //public static final float INTAKE_POWER = 0.16f;
 
     //Hardware map and telemetry variables allow for more interaction between this class and the one using it
@@ -82,14 +83,18 @@ public class Daquan_Hardware {
         bright.setPower(br);
     }
 
+    //A shortcut for braking
+    public void brake() {
+        fleft.setPower(0);
+        fright.setPower(0);
+        bleft.setPower(0);
+        bright.setPower(0);
+    }
+
     //Updates the heading variable; Normally add Pi/2 but this subtracts Pi/2 because the gyro sensor is backwards
     public void updateGyro() {
-        heading = gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle - Math.PI / 2;
-
-        //
+        heading = gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + Math.PI / 2;
         if(heading > Math.PI)
-            heading = heading - Math.PI;
-        if(heading <= - Math.PI)
-            heading = heading + Math.PI;
+            heading = heading - 2 * Math.PI;
     }
 }

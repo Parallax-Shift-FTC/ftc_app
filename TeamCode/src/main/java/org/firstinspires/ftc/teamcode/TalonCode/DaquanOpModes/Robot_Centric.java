@@ -26,9 +26,6 @@ public class Robot_Centric extends OpMode
 {
     Daquan_Hardware robot;
 
-    //Setting up drive speed constant and current drive speed (current is modified by ultra-turbo mode and such)
-    double currentDrivePower = robot.DRIVE_POWER;
-
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init()
     {
@@ -40,11 +37,11 @@ public class Robot_Centric extends OpMode
 
         //Ultra-Turbo Mode when the right bumper is held, Sneak Mode when left bumper is held
         if(gamepad1.right_bumper)
-            currentDrivePower = 1;
+            robot.currentDrivePower = 1;
         else if(gamepad1.left_bumper)
-            currentDrivePower = .15;
+            robot.currentDrivePower = .15;
         else
-            currentDrivePower = robot.DRIVE_POWER;
+            robot.currentDrivePower = robot.DRIVE_POWER;
 
         //Moves the intake wheels based on the left joystick
         //robot.rurricane.setPower(- gamepad1.left_stick_y * INTAKE_POWER);
@@ -53,17 +50,17 @@ public class Robot_Centric extends OpMode
         //Arcade drive with right joystick, turn with triggers(clockwise-right, counterclockwise-left)
         //Format: +/- Turning +/- Forward/Backward +/- Strafing
         robot.drive(
-                clipValue(currentDrivePower * (gamepad1.right_trigger - gamepad1.left_trigger) + currentDrivePower * (- gamepad1.right_stick_y) + currentDrivePower * (gamepad1.right_stick_x)),
-                clipValue(currentDrivePower * (- gamepad1.right_trigger + gamepad1.left_trigger) + currentDrivePower * (- gamepad1.right_stick_y) + currentDrivePower * (- gamepad1.right_stick_x)),
-                clipValue(currentDrivePower * (gamepad1.right_trigger - gamepad1.left_trigger) + currentDrivePower * (- gamepad1.right_stick_y) + currentDrivePower * (- gamepad1.right_stick_x)),
-                clipValue(currentDrivePower * (- gamepad1.right_trigger + gamepad1.left_trigger) + currentDrivePower * (- gamepad1.right_stick_y) + currentDrivePower * (gamepad1.right_stick_x))
+                clipValue(robot.currentDrivePower * (gamepad1.right_trigger - gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (gamepad1.right_stick_x)),
+                clipValue(robot.currentDrivePower * (- gamepad1.right_trigger + gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (- gamepad1.right_stick_x)),
+                clipValue(robot.currentDrivePower * (gamepad1.right_trigger - gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (- gamepad1.right_stick_x)),
+                clipValue(robot.currentDrivePower * (- gamepad1.right_trigger + gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (gamepad1.right_stick_x))
         );
     }
 
     //Clips the values given to the motors so that they don't go over 1
     double clipValue(double value) {
-        if(value > currentDrivePower || value < -currentDrivePower)
-            return(value / Math.abs(value) * currentDrivePower);
+        if(value > robot.currentDrivePower || value < -robot.currentDrivePower)
+            return(value / Math.abs(value) * robot.currentDrivePower);
         else
             return value;
     }

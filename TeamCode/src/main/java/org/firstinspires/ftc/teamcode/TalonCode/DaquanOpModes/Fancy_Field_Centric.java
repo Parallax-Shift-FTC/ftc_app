@@ -36,6 +36,14 @@ public class Fancy_Field_Centric extends OpMode {
         robot.updateGyro();
         telemetry.addData("Gyro Heading", Math.toDegrees(robot.heading));
 
+        //Ultra turbo and sneak modes
+        if(- gamepad1.left_stick_y > 0)
+            robot.currentDrivePower = .8;
+        else if(- gamepad1.left_stick_y < 0)
+            robot.currentDrivePower = .1;
+        else
+            robot.currentDrivePower = robot.DRIVE_POWER;
+
         //State machine
         switch(currentState) {
 
@@ -55,10 +63,10 @@ public class Fancy_Field_Centric extends OpMode {
                 double moveAngle = inputAngle + (ANGLE_FROM_DRIVER - robot.heading);
 
                 robot.drive(
-                        (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 + gamepad1.right_trigger - gamepad1.left_trigger,
-                        (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower / 2 - gamepad1.right_trigger + gamepad1.left_trigger,
-                        (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower / 2 + gamepad1.right_trigger - gamepad1.left_trigger,
-                        (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 - gamepad1.right_trigger + gamepad1.left_trigger
+                        (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower * robot.currentDrivePower + gamepad1.right_trigger - gamepad1.left_trigger,
+                        (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower * robot.currentDrivePower - gamepad1.right_trigger + gamepad1.left_trigger,
+                        (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower * robot.currentDrivePower + gamepad1.right_trigger - gamepad1.left_trigger,
+                        (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower * robot.currentDrivePower - gamepad1.right_trigger + gamepad1.left_trigger
                 );
 
                 //If the dpad is pressed it will go to the turning state and set the target angle
@@ -93,10 +101,10 @@ public class Fancy_Field_Centric extends OpMode {
                 //Arcade drive with right joystick, turn with triggers(clockwise-right, counterclockwise-left)
                 //Format: +/- Turning +/- Forward/Backward +/- Strafing
                 robot.drive(
-                        clipValue(robot.DRIVE_POWER * (gamepad1.right_trigger - gamepad1.left_trigger) + robot.DRIVE_POWER * (- gamepad1.right_stick_y) + robot.DRIVE_POWER * (gamepad1.right_stick_x)),
-                        clipValue(robot.DRIVE_POWER * (- gamepad1.right_trigger + gamepad1.left_trigger) + robot.DRIVE_POWER * (- gamepad1.right_stick_y) + robot.DRIVE_POWER * (- gamepad1.right_stick_x)),
-                        clipValue(robot.DRIVE_POWER * (gamepad1.right_trigger - gamepad1.left_trigger) + robot.DRIVE_POWER * (- gamepad1.right_stick_y) + robot.DRIVE_POWER * (- gamepad1.right_stick_x)),
-                        clipValue(robot.DRIVE_POWER * (- gamepad1.right_trigger + gamepad1.left_trigger) + robot.DRIVE_POWER * (- gamepad1.right_stick_y) + robot.DRIVE_POWER * (gamepad1.right_stick_x))
+                        clipValue(robot.currentDrivePower * (gamepad1.right_trigger - gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (gamepad1.right_stick_x)),
+                        clipValue(robot.currentDrivePower * (- gamepad1.right_trigger + gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (- gamepad1.right_stick_x)),
+                        clipValue(robot.currentDrivePower * (gamepad1.right_trigger - gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (- gamepad1.right_stick_x)),
+                        clipValue(robot.currentDrivePower * (- gamepad1.right_trigger + gamepad1.left_trigger) + robot.currentDrivePower * (- gamepad1.right_stick_y) + robot.currentDrivePower * (gamepad1.right_stick_x))
                 );
 
                 //If the dpad is pressed it will go to the turning state and set the target angle
@@ -144,24 +152,30 @@ public class Fancy_Field_Centric extends OpMode {
                 if(Math.abs(robot.heading - targetAngle) > Math.toRadians(1)) {
 
                     //Sets the turning speed and direction based on how close the robot is to the target angle
-                    if (Math.abs(robot.heading - targetAngle) > Math.toRadians(10))
-                        turningSpeed = .5 * Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading);
+                    if (Math.abs(robot.heading - targetAngle) > Math.toRadians(30))
+                        turningSpeed = .2 * Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading);
                     else
-                        turningSpeed = 0.2 * Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading);
+                        turningSpeed = 0.1 * Math.abs(targetAngle - robot.heading) / (targetAngle - robot.heading);
+                    telemetry.addData("Target Angle", targetAngle);
 
                     robot.drive(
-                            (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 - turningSpeed,
-                            (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower / 2 + turningSpeed,
-                            (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower / 2 - turningSpeed,
-                            (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 + turningSpeed
+                            (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower * robot.currentDrivePower - turningSpeed,
+                            (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower * robot.currentDrivePower + turningSpeed,
+                            (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower * robot.currentDrivePower - turningSpeed,
+                            (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower * robot.currentDrivePower + turningSpeed
                     );
                 }
-                else
+                else {
+                    robot.brake();
                     currentState = FIELD_CENTRIC_STATE;
+                }
+
 
                 //Exits out of turning if b is pressed
-                if(gamepad1.b)
+                if(gamepad1.b) {
+                    robot.brake();
                     currentState = FIELD_CENTRIC_STATE;
+                }
 
                 break;
         }
