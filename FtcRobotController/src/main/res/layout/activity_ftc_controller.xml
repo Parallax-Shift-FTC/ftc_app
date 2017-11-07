@@ -43,42 +43,48 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   <!-- black bar on top -->
   <RelativeLayout
-    android:id="@+id/top_bar"
-    android:layout_width="fill_parent"
-    android:layout_height="80dp"
-    android:background="@color/background_black">
+      android:id="@+id/top_bar"
+      android:layout_width="fill_parent"
+      android:layout_height="80dp"
+      android:background="@color/very_dark_blue">
 
     <ImageView
-      android:id="@+id/robotIcon"
-      android:src="@drawable/icon_robotcontroller"
-      android:layout_width="wrap_content"
-      android:layout_height="fill_parent"
-      android:adjustViewBounds="true"
-      android:layout_margin="1dp"/>
+        android:id="@+id/robotIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_margin="1dp"
+        android:adjustViewBounds="true"
+        android:background="@color/very_dark_blue"
+        android:src="@drawable/ps_logo" />
 
     <TextView
-      android:id="@+id/textDeviceName"
-      android:layout_toEndOf="@id/robotIcon"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="?attr/textWhite"
-      android:textAppearance="?android:attr/textAppearanceMedium"
-      android:padding="8dp"
-      android:textStyle="bold"/>
+        android:id="@+id/textDeviceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/robotIcon"
+        android:layout_toEndOf="@+id/robotIcon"
+        android:fontFamily="esi09a uX 98 yie4 cxc4xZ 87v2c"
+        android:padding="8dp"
+        android:textColor="@color/background_white"
+        android:textColorHint="@color/info_shadow"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        android:visibility="visible" />
 
     <ImageButton
-      android:id="@+id/menu_buttons"
-      android:scaleType="fitXY"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:src="@drawable/icon_menu"
-      android:background="@android:color/transparent"
-      android:padding="15dp"
-      android:adjustViewBounds="true"
-      android:layout_alignParentEnd="true"
-      android:layout_centerInParent="true"
-      android:layout_centerHorizontal="true"
-      android:layout_margin="10dp"/>
+        android:id="@+id/menu_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        android:background="@color/very_dark_blue"
+        android:padding="15dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/icon_menu" />
 
   </RelativeLayout>
   <!-- end of black bar -->
@@ -165,16 +171,18 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <!-- invisible except when programming mode is activated from the DS -->
     <TextView
-      android:id="@+id/textRemoteProgrammingMode"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="?attr/backgroundLight"
-      android:gravity="center"
-      android:textColor="?attr/textWhite"
-      android:textSize="40sp"
-      android:textStyle="bold"
-      android:visibility="invisible"
-      android:text="" />
+        android:id="@+id/textRemoteProgrammingMode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/textRobotStatus"
+        android:background="?attr/backgroundLight"
+        android:gravity="center"
+        android:text=""
+        android:textColor="?attr/textWhite"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:visibility="invisible" />
 
   </RelativeLayout>
 
