@@ -19,7 +19,7 @@ public class Fancy_Field_Centric extends OpMode {
     double turningSpeed;
 
     //The angle that the robot should drive at relative to its starting position, Pi/2 corresponds to straight forward
-    double angleFromDriver= Math.PI / 2;
+    double angleFromDriver = Math.PI / 2;
 
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init (){
@@ -32,11 +32,16 @@ public class Fancy_Field_Centric extends OpMode {
         robot.updateGyro();
         telemetry.addData("Gyro Heading", Math.toDegrees(robot.heading));
 
+        telemetry.addData("Fleft Encoder", robot.fleft.getCurrentPosition());
+        telemetry.addData("Fright Encoder", robot.fright.getCurrentPosition());
+        telemetry.addData("Bleft Encoder", robot.bleft.getCurrentPosition());
+        telemetry.addData("Bright Encoder", robot.bright.getCurrentPosition());
+
         //Ultra turbo and sneak modes
         if(gamepad1.left_stick_x > 0)
-            robot.currentDrivePower = robot.DRIVE_POWER + (1 - robot.DRIVE_POWER) * gamepad1.left_stick_x;
+            robot.currentDrivePower = robot.DRIVE_POWER + (robot.maxPower - robot.DRIVE_POWER) * gamepad1.left_stick_x;
         else if(gamepad1.left_stick_x < 0)
-            robot.currentDrivePower = robot.DRIVE_POWER - (robot.DRIVE_POWER - .2) * - gamepad1.left_stick_x;
+            robot.currentDrivePower = robot.DRIVE_POWER - (robot.DRIVE_POWER - robot.minPower) * - gamepad1.left_stick_x;
         else
             robot.currentDrivePower = robot.DRIVE_POWER;
 

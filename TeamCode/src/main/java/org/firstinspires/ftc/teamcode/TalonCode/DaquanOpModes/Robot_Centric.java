@@ -37,9 +37,9 @@ public class Robot_Centric extends OpMode
 
         //Ultra turbo and sneak modes
         if(gamepad1.left_stick_x > 0)
-            robot.currentDrivePower = robot.DRIVE_POWER + (1 - robot.DRIVE_POWER) * gamepad1.left_stick_x;
+            robot.currentDrivePower = robot.DRIVE_POWER + (robot.maxPower - robot.DRIVE_POWER) * gamepad1.left_stick_x;
         else if(gamepad1.left_stick_x < 0)
-            robot.currentDrivePower = robot.DRIVE_POWER - (robot.DRIVE_POWER - .2) * - gamepad1.left_stick_x;
+            robot.currentDrivePower = robot.DRIVE_POWER - (robot.DRIVE_POWER - robot.minPower) * - gamepad1.left_stick_x;
         else
             robot.currentDrivePower = robot.DRIVE_POWER;
 

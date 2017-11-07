@@ -25,9 +25,10 @@ public class Daquan_Hardware {
 
     //Public variables for other programs to utilize
     public double heading;
-    public double currentDrivePower = .4;
-    public static final double DRIVE_POWER = .4;
-    //public static final float INTAKE_POWER = 0.16f;
+    public double currentDrivePower = .5;
+    public double minPower = .3;
+    public double maxPower = 1;
+    public static final double DRIVE_POWER = .5;
 
     //Hardware map and telemetry variables allow for more interaction between this class and the one using it
     private HardwareMap hwMap;
@@ -50,13 +51,11 @@ public class Daquan_Hardware {
         fleft.setDirection(DcMotor.Direction.REVERSE);
         bleft.setDirection(DcMotor.Direction.REVERSE);
 
-        //rurricane.setDirection(DcMotor.Direction.REVERSE);
-
-        /*//Sets the motors to run based on speed and not power
+        //Sets the motors to run based on speed and not power
         fleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
+        bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         //Sets up the gyro sensor if necessary
         if(usesGyro) {
