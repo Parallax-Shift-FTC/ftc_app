@@ -103,10 +103,10 @@ public class TestingTeleopTank_Iterative extends OpMode{
         leftY = gamepad1.left_stick_y;
         rightX = gamepad1.right_stick_x;
 
-        robot.frontLeft.setPower(leftX + leftY);
-        robot.backRight.setPower(leftX + leftY);
-        robot.frontRight.setPower(-leftX + leftY);
-        robot.backLeft.setPower(-leftX + leftY);
+        robot.frontLeft.setPower(leftX + leftY + rightX);
+        robot.backRight.setPower(leftX + leftY - rightX);
+        robot.frontRight.setPower(-leftX + leftY - rightX);
+        robot.backLeft.setPower(-leftX + leftY + rightX);
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         // left = -gamepad1.left_stick_y;
