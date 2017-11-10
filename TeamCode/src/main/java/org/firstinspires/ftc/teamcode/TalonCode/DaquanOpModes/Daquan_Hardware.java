@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.TalonCode.DaquanOpModes;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -20,11 +22,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 public class Daquan_Hardware {
 
     //Empty variables for the hardware map
-    public DcMotor fleft, fright, bleft, bright /*lurricane, rurricane*/; //Uncomment the hurricanes out once we get the second REV module
-    public BNO055IMU gyro;
-
+    public DcMotor fleft, fright, bleft, bright;
+    public Servo jewelArm;
+    public BNO055IMU gyroSensor;
+    public ColorSensor colorSensor;
     //Public variables for other programs to utilize
     public double heading;
+    public double red;
+    public double blue;
+    public double green;
+    public double alpha;
+
     public double currentDrivePower = .5;
     public double minPower = .3;
     public double maxPower = 1;
@@ -57,9 +65,16 @@ public class Daquan_Hardware {
         bleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //Setting up our servo and setting it to the initial position
+        jewelArm = hwmap.servo.get("jewel arm");
+        jewelArm.setPosition(.5);
+
+        //Setting up sensors
+        colorSensor = hwMap.colorSensor.get("color");
+
         //Sets up the gyro sensor if necessary
         if(usesGyro) {
-            gyro = hwMap.get(BNO055IMU.class, "imu");
+            gyroSensor = hwMap.get(BNO055IMU.class, "imu");
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
             parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
             parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -67,7 +82,7 @@ public class Daquan_Hardware {
             parameters.loggingEnabled = true;
             parameters.loggingTag = "IMU";
             parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-            gyro.initialize(parameters);
+            gyroSensor.initialize(parameters);
         }
 
         telemetry.addData("Ready to begin", true);
@@ -92,8 +107,15 @@ public class Daquan_Hardware {
 
     //Updates the heading variable; Normally add Pi/2 but this subtracts Pi/2 because the gyro sensor is backwards
     public void updateGyro() {
-        heading = gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + Math.PI / 2;
+        heading = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + Math.PI / 2;
         if(heading > Math.PI)
             heading = heading - 2 * Math.PI;
+    }
+
+    public void updateColor() {
+        red = colorSensor.red();
+        blue = colorSensor.blue();
+        green = colorSensor.green();
+        alpha = colorSensor.alpha();
     }
 }
