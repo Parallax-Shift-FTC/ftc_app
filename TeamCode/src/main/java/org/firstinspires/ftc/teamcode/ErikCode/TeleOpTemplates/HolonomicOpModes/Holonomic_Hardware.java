@@ -77,6 +77,14 @@ public class    Holonomic_Hardware {
     public void updateGyro() {
         //May not have to make negative? Make it so that turning is CCW
          heading =  gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle;
+         if(heading > 0)
+         {
+             heading = heading +0;
+         }
+         else
+         {
+             heading = heading+2*Math.PI;
+         }
     }
 
     double ClipValue(double value) {

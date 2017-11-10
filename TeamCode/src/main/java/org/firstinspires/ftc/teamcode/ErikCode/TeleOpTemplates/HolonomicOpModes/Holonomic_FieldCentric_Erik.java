@@ -32,7 +32,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class Holonomic_FieldCentric_Erik extends OpMode
 {
     Holonomic_Hardware robot;
-    double angleFromDriver = Math.PI/2;
+    double angleFromDriver = Math.PI;
     double jTheta;
     double jp;
     double theta;

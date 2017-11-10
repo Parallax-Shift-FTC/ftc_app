@@ -12,7 +12,7 @@ Program where using the bumpers simply takes you to the last gyro heading retrie
 public class Holonomic_FieldCentric_Erik_NewControls3 extends OpMode
 {
     Holonomic_Hardware robot;
-    double angleFromDriver = Math.PI/2;
+    double angleFromDriver = Math.PI;
     double jTheta;
     double jp;
     double theta;
