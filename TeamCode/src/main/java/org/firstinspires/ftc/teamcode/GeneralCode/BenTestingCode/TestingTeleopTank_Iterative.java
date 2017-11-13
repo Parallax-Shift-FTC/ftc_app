@@ -55,7 +55,6 @@ import org.firstinspires.ftc.teamcode.GeneralCode.BenTestingCode.HardwarePushbot
  */
 // test
 @TeleOp(name="Pushbot: Teleop Tank", group="Pushbot")
-@Disabled
 public class TestingTeleopTank_Iterative extends OpMode{
 
     /* Declare OpMode members. */

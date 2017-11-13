@@ -19,7 +19,9 @@ public class Holonomic_FieldCentric_Erik_NewControls4 extends OpMode
     boolean robotCentric = false;
     boolean shouldTurn = false;
     double desiredHeading;
-    float turnspeed;
+    double turnspeed;
+    double error;
+    double turnDirection;
 
     @Override
     public void init ()
@@ -36,59 +38,45 @@ public class Holonomic_FieldCentric_Erik_NewControls4 extends OpMode
         {
             shouldTurn = true;
             desiredHeading = 0;
-            if(robot.heading > desiredHeading) {
-                turnspeed = .2f;
-            }
-            else if(robot.heading < desiredHeading)
-            {
-                turnspeed = -.2f;
-            }
         }
 
         if(gamepad1.dpad_down && !shouldTurn)
         {
             shouldTurn = true;
             desiredHeading = Math.PI;
-            if(robot.heading > desiredHeading) {
-                turnspeed = .2f;
-            }
-            else if(robot.heading < desiredHeading)
-            {
-                turnspeed = -.2f;
-            }
         }
 
         if(gamepad1.dpad_left && !shouldTurn)
         {
             shouldTurn = true;
             desiredHeading = Math.PI/2;
-            if(robot.heading > desiredHeading) {
-                turnspeed = .2f;
-            }
-            else if(robot.heading < desiredHeading)
-            {
-                turnspeed = -.2f;
-            }
         }
 
         if(gamepad1.dpad_right && !shouldTurn)
         {
             shouldTurn = true;
             desiredHeading = 3*Math.PI/2;
-            if(robot.heading > desiredHeading) {
-                turnspeed = .2f;
-            }
-            else if(robot.heading < desiredHeading)
+        }
+
+        if(desiredHeading == 0 || desiredHeading == 2*Math.PI)
+        {
+            if(robot.heading > Math.PI)
             {
-                turnspeed = -.2f;
+                desiredHeading = 2*Math.PI;
+            }
+            else
+            {
+                desiredHeading = 0;
             }
         }
 
-        if(gamepad1.b)
-            shouldTurn = false;
+        error = desiredHeading - robot.heading;
+        turnDirection = Math.abs(error) / error;
+        turnspeed = error/Math.PI;
 
-        else if(robot.heading > desiredHeading-Math.PI/6 && robot.heading < desiredHeading+Math.PI/6)
-          shouldTurn = false;
+        if(gamepad1.b) {
+            shouldTurn = false;
+        }
 
         jTheta = Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
 
