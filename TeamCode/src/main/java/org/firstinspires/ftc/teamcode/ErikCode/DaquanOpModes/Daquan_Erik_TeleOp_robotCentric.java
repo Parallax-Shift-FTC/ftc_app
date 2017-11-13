@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.GeneralCode.TeleOpTemplates.HolonomicOpModes.Holonomic_Hardware;
+
 /*
 - Name: Daquan Robot-Centric Tele-Op with Erik's Controls
 - Creator[s]: Erik
@@ -20,8 +22,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 - Possible Improvements: Creating a version of the program that successfully incorporates field
 centric Drive.
  */
-@Disabled
-@TeleOp(name = "Daquan Robot Centric Erik", group = "Daquan")
+
+@TeleOp(name = "Daquan RobotCentric Tele-Op Erik", group = "Daquan Erik")
 public class Daquan_Erik_TeleOp_robotCentric extends OpMode
 {
     Daquan_Hardware robot;
@@ -37,11 +39,11 @@ public class Daquan_Erik_TeleOp_robotCentric extends OpMode
     {
         if(gamepad1.right_bumper && gamepad1.left_bumper)
         {
-            robot.currentDrivePower = 1f;
+            robot.dp = 1f;
         }
         else
         {
-            robot.currentDrivePower = .2f;
+            robot.dp = .2f;
         }
 
         robot.drive(
