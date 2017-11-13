@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.ErikCode.DaquanOpModes;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 public class Daquan_Hardware {
 
     //Declaring variables
+    public ColorSensor colorSensor;
     public DcMotor fleft, fright, bleft, bright;
     public BNO055IMU gyro;
     public double heading;
@@ -29,9 +31,13 @@ public class Daquan_Hardware {
     private Telemetry telemetry;
     public ElapsedTime time = new ElapsedTime();
     double currentDrivePower;
+    public double red;
+    public double blue;
+    public double green;
+    public double brightness;
 
     //Constructor; Put program's hardwaremap first, then telemetry,  then put true if gyro will be used or false if it won't
-    public Daquan_Hardware(HardwareMap hwmap, Telemetry telem, boolean usesGyro){
+    public Daquan_Hardware(HardwareMap hwmap, Telemetry telem, boolean usesGyro) {
 
         hwMap = hwmap;
         telemetry = telem;
@@ -48,8 +54,10 @@ public class Daquan_Hardware {
         fright.setDirection(DcMotor.Direction.REVERSE);
         bright.setDirection(DcMotor.Direction.REVERSE);
 
+        colorSensor = hwMap.colorSensor.get("color");
+
         //Setting up gyro sensor if necessary
-        if(usesGyro) {
+        if (usesGyro) {
             gyro = hwMap.get(BNO055IMU.class, "imu");
             //Setting up data for gyro sensors
             BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -76,21 +84,25 @@ public class Daquan_Hardware {
 
     public void updateGyro() {
         //May not have to make negative? Make it so that turning is CCW
-        heading =  gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle;
-        if(heading > 0)
-        {
-            heading = heading +0;
-        }
-        else
-        {
-            heading = heading+2*Math.PI;
+        heading = gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle;
+        if (heading > 0) {
+            heading = heading + 0;
+        } else {
+            heading = heading + 2 * Math.PI;
         }
     }
 
     double ClipValue(double value) {
-        if(value > dp || value < - dp)
+        if (value > dp || value < -dp)
             return ((Math.abs(value) / value) * dp);
         else
             return value;
+    }
+
+    public void UpdateColor() {
+        red = colorSensor.red();
+        blue = colorSensor.blue();
+        green = colorSensor.green();
+        brightness = colorSensor.alpha();
     }
 }
