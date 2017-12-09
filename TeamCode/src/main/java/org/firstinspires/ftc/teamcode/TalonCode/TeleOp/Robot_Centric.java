@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.TalonCode.DaquanOpModes;
+package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Daquan;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -24,12 +24,12 @@ centric Drive.
 @TeleOp(name = "Talon's Robot Centric", group = "Daquan")
 public class Robot_Centric extends OpMode
 {
-    Daquan_Hardware robot;
+    Daquan robot;
 
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init()
     {
-        robot = new Daquan_Hardware(hardwareMap, telemetry, false);
+        robot = new Daquan(hardwareMap, telemetry, false);
     }
 
     @Override

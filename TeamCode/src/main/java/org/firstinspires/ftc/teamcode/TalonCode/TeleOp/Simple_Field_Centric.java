@@ -1,19 +1,20 @@
-package org.firstinspires.ftc.teamcode.TalonCode.DaquanOpModes;
+package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Daquan;
 
-@TeleOp(name = "Talon's Field Centric", group = "Daquan")
-public class Field_Centric extends OpMode {
+@TeleOp(name = "Talon's Simple Field Centric", group = "Daquan")
+public class Simple_Field_Centric extends OpMode {
 
-    Daquan_Hardware robot;
+    Daquan robot;
 
     //The angle that the robot should drive at relative to its starting position, Pi/2 corresponds to straight forward
     static final double ANGLE_FROM_DRIVER = Math.PI / 2;
 
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init (){
-        robot = new Daquan_Hardware(hardwareMap, telemetry, true);
+        robot = new Daquan(hardwareMap, telemetry, true);
     }
 
     @Override

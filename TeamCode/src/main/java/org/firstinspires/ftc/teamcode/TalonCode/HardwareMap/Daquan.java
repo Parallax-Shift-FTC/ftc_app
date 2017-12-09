@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TalonCode.DaquanOpModes;
+package org.firstinspires.ftc.teamcode.TalonCode.HardwareMap;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -19,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
  for our test robot named Daquan
  */
 
-public class Daquan_Hardware {
+public class Daquan {
 
     //Empty variables for the hardware map
     public DcMotor fleft, fright, bleft, bright;
@@ -44,7 +44,7 @@ public class Daquan_Hardware {
 
     //Constructor; Put in the hardware map and telemetry of your current program, and true or false depending on if you will be using the gyro sensor
     //Call this during initialization
-    public Daquan_Hardware(HardwareMap hwmap, Telemetry telem, boolean usesGyro) {
+    public Daquan(HardwareMap hwmap, Telemetry telem, boolean usesGyro) {
         hwMap = hwmap;
         telemetry = telem;
 
