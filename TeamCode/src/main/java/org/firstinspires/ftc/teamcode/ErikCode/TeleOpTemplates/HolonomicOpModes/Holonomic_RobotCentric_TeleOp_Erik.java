@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.GeneralCode.TeleOpTemplates.HolonomicOpMod
 - Possible Improvements: Creating a version of the program that successfully incorporates field
 centric Drive.
  */
-
+@Disabled
 @TeleOp(name = "Holonomic RobotCentric Tele-Op Erik", group = "holonomic Erik")
 public class Holonomic_RobotCentric_TeleOp_Erik extends OpMode
 {

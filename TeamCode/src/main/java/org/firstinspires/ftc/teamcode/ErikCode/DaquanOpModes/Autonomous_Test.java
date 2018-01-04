@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.ErikCode.DaquanOpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
  * Created by Brown on 11/13/2017.
  */
+@Disabled
 @Autonomous(name = "Erik's Auto Test", group = "Daquan Erik")
 public class Autonomous_Test extends LinearOpMode{
     Daquan_Hardware robot;

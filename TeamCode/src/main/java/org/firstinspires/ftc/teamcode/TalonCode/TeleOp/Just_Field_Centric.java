@@ -1,30 +1,33 @@
 package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Daquan;
 
-@TeleOp(name = "Talon's Simple Field Centric", group = "Daquan")
-public class Simple_Field_Centric extends OpMode {
+import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
 
-    Daquan robot;
+@Disabled
+@TeleOp(name = "Talon's Simple Field Centric", group = "Zoinkifier")
+public class Just_Field_Centric extends OpMode {
+
+    Zoinkifier robot;
 
     //The angle that the robot should drive at relative to its starting position, Pi/2 corresponds to straight forward
     static final double ANGLE_FROM_DRIVER = Math.PI / 2;
 
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init (){
-        robot = new Daquan(hardwareMap, telemetry, true);
+        //robot = new Daquan(hardwareMap, telemetry, true);
     }
 
     @Override
     public void loop (){
 
         //Ultra turbo and sneak modes
-        if(gamepad1.left_stick_x > 0)
-            robot.currentDrivePower = robot.DRIVE_POWER + (robot.maxPower - robot.DRIVE_POWER) * gamepad1.left_stick_x;
-        else if(gamepad1.left_stick_x < 0)
-            robot.currentDrivePower = robot.DRIVE_POWER - (robot.DRIVE_POWER - robot.minPower) * - gamepad1.left_stick_x;
+        if(gamepad1.left_bumper)
+            robot.currentDrivePower = robot.MAX_DRIVE_POWER;
+        else if(gamepad1.dpad_down)
+            robot.currentDrivePower = robot.MIN_DRIVE_POWER;
         else
             robot.currentDrivePower = robot.DRIVE_POWER;
 
@@ -48,7 +51,6 @@ public class Simple_Field_Centric extends OpMode {
                 (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower / 2 + gamepad1.right_trigger - gamepad1.left_trigger,
                 (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower / 2 - gamepad1.right_trigger + gamepad1.left_trigger
         );
-
         telemetry.addData("Gyro Heading", robot.heading);
         telemetry.addData("Joystick Direction", Math.toDegrees(inputAngle));
         telemetry.addData("Joystick Magnitude", inputPower);

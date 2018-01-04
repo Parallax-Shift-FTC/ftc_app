@@ -54,6 +54,7 @@ import org.firstinspires.ftc.teamcode.GeneralCode.BenTestingCode.HardwarePushbot
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 // test
+    @Disabled
 @TeleOp(name="Pushbot: Teleop Tank", group="Pushbot")
 public class TestingTeleopTank_Iterative extends OpMode{
 

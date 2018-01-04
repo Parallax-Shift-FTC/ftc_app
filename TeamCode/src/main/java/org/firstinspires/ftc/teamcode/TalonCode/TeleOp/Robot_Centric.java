@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Daquan;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
 
 /*
 - Name: Daquan Robot-Centric Tele-Op with Talon's Controls
@@ -21,15 +22,16 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 centric Drive.
  */
 
-@TeleOp(name = "Talon's Robot Centric", group = "Daquan")
+
+@TeleOp(name = "Talon's Robot Centric", group = "Zoinkifier")
 public class Robot_Centric extends OpMode
 {
-    Daquan robot;
+    Zoinkifier robot;
 
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init()
     {
-        robot = new Daquan(hardwareMap, telemetry, false);
+        robot = new Zoinkifier(hardwareMap, telemetry);
     }
 
     @Override
@@ -37,9 +39,9 @@ public class Robot_Centric extends OpMode
 
         //Ultra turbo and sneak modes
         if(gamepad1.left_stick_x > 0)
-            robot.currentDrivePower = robot.DRIVE_POWER + (robot.maxPower - robot.DRIVE_POWER) * gamepad1.left_stick_x;
+            robot.currentDrivePower = robot.DRIVE_POWER + (robot.MAX_DRIVE_POWER - robot.DRIVE_POWER) * gamepad1.left_stick_x;
         else if(gamepad1.left_stick_x < 0)
-            robot.currentDrivePower = robot.DRIVE_POWER - (robot.DRIVE_POWER - robot.minPower) * - gamepad1.left_stick_x;
+            robot.currentDrivePower = robot.DRIVE_POWER - (robot.DRIVE_POWER - robot.MIN_DRIVE_POWER) * - gamepad1.left_stick_x;
         else
             robot.currentDrivePower = robot.DRIVE_POWER;
 

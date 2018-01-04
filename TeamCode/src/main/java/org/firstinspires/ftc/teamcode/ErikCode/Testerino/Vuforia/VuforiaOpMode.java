@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -15,7 +16,7 @@ import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforia
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-
+@Disabled
 @Autonomous(name="VuMark Id Test", group ="Vumark")
 public class VuforiaOpMode extends LinearOpMode {
 

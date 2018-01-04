@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 /*
 Program where using the bumpers simply takes you to the last gyro heading retrieved
  */
-
+@Disabled
 @TeleOp(name = "Holonomic FieldCentric Tele-Op Test 3", group = "holonomic Erik")
 public class Holonomic_FieldCentric_Erik_NewControls3 extends OpMode
 {

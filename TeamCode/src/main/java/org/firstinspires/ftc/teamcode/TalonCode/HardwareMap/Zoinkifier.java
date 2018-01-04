@@ -12,39 +12,31 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-public class Qualifier {
+public class Zoinkifier {
 
     //Empty variables for the hardware map:
     //Fleft-bright are our mecanum drive motors, lintake/rintake are the Rev motors that spin our intake spinners, flipper is the motor on the flipper, and relicWinch will be the motor that powers our relic mechanism
-    public DcMotor fleft, fright, bleft, bright, lintake, rintake, flipper/*, relicWinch*/;
+    public DcMotor fleft, fright, bleft, bright, lintake, rintake;
     //Servo names are self-explanatory, the grabbers are on our relic mechanism
-    public Servo colorArm, leftTouchArm, rightTouchArm, leftIntakeArm, rightIntakeArm/*, insideGrabber, outsideGrabber*/;
+    public Servo topColorArm, baseColorArm, leftIntakeArm, rightIntakeArm;
     //Sensor names are self-explanatory
     public BNO055IMU gyroSensor;
     public ColorSensor colorSensor;
-    public TouchSensor leftTouchSensor, rightTouchSensor;
 
     //Public variables for other programs to utilize
     public double heading;
     public double red;
     public double blue;
-    public double green;
-    public double alpha;
-    public boolean leftTouch;
-    public boolean rightTouch;
 
     //Variables for our drive power; current is for individual instances to modify, the rest are constants
     public double currentDrivePower = .5;
-    public static final double MIN_DRIVE_POWER = .3;
+    public static final double MIN_DRIVE_POWER = .1;
     public static final double MAX_DRIVE_POWER = 1;
     public static final double DRIVE_POWER = .5;
     //Other helpful constants, these have not yet been tested
     public static final double INTAKE_DEPLOYED_POSITION = .8;
     public static final double INTAKE_RETRACTED_POSITION = .2;
     public static final double INTAKE_POWER = .5;
-    public static final double FLIPPER_POWER = .5;
-    public static final double TOUCH_STARTING_POSITION = .5;
-    public static final double TOUCH_DEPLOYED_POSITION = 1;
     public static final double COLOR_STARTING_POSITION = .5;
     public static final double COLOR_DEPLOYED_POSITION = 1;
 
@@ -55,7 +47,7 @@ public class Qualifier {
 
     //Constructor; Put in the hardware map and telemetry of your current program
     //Call this during initialization, add Vuforia later
-    public Qualifier(HardwareMap hwmap, Telemetry telem) {
+    public Zoinkifier(HardwareMap hwmap, Telemetry telem) {
         hwMap = hwmap;
         telemetry = telem;
 
@@ -69,35 +61,19 @@ public class Qualifier {
         bright = hwMap.dcMotor.get("bright");
         lintake = hwMap.dcMotor.get("lintake");
         rintake = hwMap.dcMotor.get("rintake");
-        flipper = hwMap.dcMotor.get("flipper");
-        //relicWinch = hwMap.dcMotor.get("relicWinch");
 
         fleft.setDirection(DcMotor.Direction.REVERSE);
         bleft.setDirection(DcMotor.Direction.REVERSE);
-        //Not sure how to reverse this yet
-        rintake.setDirection(DcMotor.Direction.REVERSE);
-
-        //Might have to reverse some of the servos
 
         //Setting up our servos and setting them to their initial positions (will have to modify)
-        colorArm = hwMap.servo.get("color arm");
-        leftTouchArm = hwMap.servo.get("left touch arm");
-        rightTouchArm = hwMap.servo.get("right touch arm");
+        topColorArm = hwMap.servo.get("top color arm");
+        baseColorArm = hwMap.servo.get("base color arm");
         leftIntakeArm= hwMap.servo.get("left intake arm");
         rightIntakeArm = hwMap.servo.get("right intake arm");
-        /*outsideGrabber = hwMap.servo.get("outside grabber");
-        insideGrabber = hwMap.servo.get("inside grabber");*/
-        colorArm.setPosition(COLOR_STARTING_POSITION);
-        leftTouchArm.setPosition(TOUCH_STARTING_POSITION);
-        rightTouchArm.setPosition(TOUCH_STARTING_POSITION);
         retractIntake();
-        /*outsideGrabber.setPosition(.5);
-        insideGrabber.setPosition(.5);*/
 
         //Setting up sensors
         colorSensor = hwMap.colorSensor.get("color");
-        leftTouchSensor = hwMap.touchSensor.get("left touch");
-        rightTouchSensor = hwMap.touchSensor.get("right touch");
         gyroSensor = hwMap.get(BNO055IMU.class, "gyro");
         //Additional gyro setup
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -164,11 +140,5 @@ public class Qualifier {
     public void updateColor() {
         red = colorSensor.red();
         blue = colorSensor.blue();
-    }
-
-    //Updates the touch sensor variables
-    public void updateTouch() {
-        leftTouch = leftTouchSensor.isPressed();
-        rightTouch = leftTouchSensor.isPressed();
     }
 }
