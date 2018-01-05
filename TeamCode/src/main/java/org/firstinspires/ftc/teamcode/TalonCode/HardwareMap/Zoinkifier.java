@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -16,7 +17,7 @@ public class Zoinkifier {
 
     //Empty variables for the hardware map:
     //Fleft-bright are our mecanum drive motors, lintake/rintake are the Rev motors that spin our intake spinners, flipper is the motor on the flipper, and relicWinch will be the motor that powers our relic mechanism
-    public DcMotor fleft, fright, bleft, bright, lintake, rintake;
+    public DcMotor fleft, fright, bleft, bright, lintake, rintake, flipper;
     //Servo names are self-explanatory, the grabbers are on our relic mechanism
     public Servo topColorArm, baseColorArm, leftIntakeArm, rightIntakeArm;
     //Sensor names are self-explanatory
@@ -37,9 +38,7 @@ public class Zoinkifier {
     public static final double INTAKE_DEPLOYED_POSITION = .8;
     public static final double INTAKE_RETRACTED_POSITION = .2;
     public static final double INTAKE_POWER = .5;
-    public static final double COLOR_STARTING_POSITION = .5;
-    public static final double COLOR_DEPLOYED_POSITION = 1;
-
+    public static final double FLIPPER_POWER = .2;
 
     //Hardware map and telemetry variables allow for more interaction between this class and the one using it
     private HardwareMap hwMap;
@@ -61,20 +60,22 @@ public class Zoinkifier {
         bright = hwMap.dcMotor.get("bright");
         lintake = hwMap.dcMotor.get("lintake");
         rintake = hwMap.dcMotor.get("rintake");
+        flipper = hwMap.dcMotor.get("flipper");
 
-        fleft.setDirection(DcMotor.Direction.REVERSE);
-        bleft.setDirection(DcMotor.Direction.REVERSE);
+        fright.setDirection(DcMotor.Direction.REVERSE);
+        bright.setDirection(DcMotor.Direction.REVERSE);
+        rintake.setDirection(DcMotor.Direction.REVERSE);
 
         //Setting up our servos and setting them to their initial positions (will have to modify)
-        topColorArm = hwMap.servo.get("top color arm");
-        baseColorArm = hwMap.servo.get("base color arm");
+        topColorArm = hwMap.servo.get("tarm");
+        baseColorArm = hwMap.servo.get("barm");
         leftIntakeArm= hwMap.servo.get("left intake arm");
         rightIntakeArm = hwMap.servo.get("right intake arm");
-        retractIntake();
 
         //Setting up sensors
         colorSensor = hwMap.colorSensor.get("color");
         gyroSensor = hwMap.get(BNO055IMU.class, "gyro");
+
         //Additional gyro setup
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
@@ -118,15 +119,9 @@ public class Zoinkifier {
     }
 
     //A shortcut for running the intake motors, put true to make it run and false to make it brake
-    public void runIntake(boolean shouldRun) {
-        if(shouldRun) {
-            lintake.setPower(INTAKE_POWER);
-            rintake.setPower(INTAKE_POWER);
-        }
-        else {
-            lintake.setPower(0);
-            rintake.setPower(0);
-        }
+    public void runIntake(double power) {
+            lintake.setPower(power);
+            rintake.setPower(power);
     }
 
     //Updates the heading variable; add pi/2 to make the starting angle 90 degrees instead of 0

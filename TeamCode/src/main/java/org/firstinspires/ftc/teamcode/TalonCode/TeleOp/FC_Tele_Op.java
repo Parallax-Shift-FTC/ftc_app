@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
@@ -15,10 +14,6 @@ public class FC_Tele_Op extends OpMode {
     int currentState = 0;
     static final int FIELD_CENTRIC_STATE = 0;
     static final int ROBOT_CENTRIC_STATE = 1;
-
-    //Target angle for turning
-    double targetAngle;
-    double turningSpeed;
 
     //The angle that the robot should drive at relative to its starting position, Pi/2 corresponds to straight forward
     double angleFromDriver = Math.PI / 2;
@@ -47,16 +42,20 @@ public class FC_Tele_Op extends OpMode {
             angleFromDriver = robot.heading;
 
         //Deploys or retracts the intake spinners if the up or down button is pressed on the dpad on the second controller
-        if(gamepad2.dpad_right)
+        if(gamepad1.dpad_right)
             robot.deployIntake();
-        else if(gamepad2.dpad_left)
+        else if(gamepad1.dpad_left)
             robot.retractIntake();
 
         //Runs the intake spinners when a is pressed on the second gamepad
-        if(gamepad2.a)
-            robot.runIntake(true);
+        if(gamepad1.a)
+            robot.runIntake(robot.INTAKE_POWER);
+        else if (gamepad1.y)
+            robot.runIntake(- robot.INTAKE_POWER);
         else
-            robot.runIntake(false);
+            robot.runIntake(0);
+
+        robot.flipper.setPower(robot.FLIPPER_POWER * -gamepad1.left_trigger + robot.FLIPPER_POWER * gamepad1.right_trigger);
 
         //State machine
         switch(currentState) {
