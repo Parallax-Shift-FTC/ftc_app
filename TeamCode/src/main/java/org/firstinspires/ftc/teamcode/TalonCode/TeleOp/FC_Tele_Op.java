@@ -21,6 +21,7 @@ public class FC_Tele_Op extends OpMode {
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init (){
         robot = new Zoinkifier(hardwareMap, telemetry);
+        robot.deployIntake();
     }
 
     @Override
@@ -29,33 +30,25 @@ public class FC_Tele_Op extends OpMode {
         robot.updateGyro();
         telemetry.addData("Gyro Heading", Math.toDegrees(robot.heading));
 
-        //Ultra turbo and sneak modes
-        if(gamepad1.left_bumper)
-            robot.currentDrivePower = robot.MAX_DRIVE_POWER;
-        else if(gamepad1.dpad_down)
-            robot.currentDrivePower = robot.MIN_DRIVE_POWER;
-        else
-            robot.currentDrivePower = robot.DRIVE_POWER;
-
         //Changes the angle of the robot's motion with respect to the driver to its current angle when the start button is pressed on gamepad one
-        if(gamepad1.back)
+        if(gamepad1.y)
             angleFromDriver = robot.heading;
 
-        //Deploys or retracts the intake spinners if the up or down button is pressed on the dpad on the second controller
-        if(gamepad1.dpad_right)
-            robot.deployIntake();
-        else if(gamepad1.dpad_left)
-            robot.retractIntake();
-
-        //Runs the intake spinners when a is pressed on the second gamepad
-        if(gamepad1.a)
-            robot.runIntake(robot.INTAKE_POWER);
-        else if (gamepad1.y)
-            robot.runIntake(- robot.INTAKE_POWER);
+        //Runs the intake spinners with bumpers
+        if(gamepad1.left_bumper)
+            robot.runIntake(robot.INTAKE_POWER, robot.INTAKE_POWER);
+        else if (gamepad1.right_bumper)
+            robot.runIntake(- robot.INTAKE_POWER, - robot.INTAKE_POWER);
         else
-            robot.runIntake(0);
+            robot.runIntake(robot.INTAKE_POWER * (gamepad1.left_trigger - gamepad1.right_trigger), robot.INTAKE_POWER * ( - gamepad1.left_trigger + gamepad1.right_trigger));
 
-        robot.flipper.setPower(robot.FLIPPER_POWER * -gamepad1.left_trigger + robot.FLIPPER_POWER * gamepad1.right_trigger);
+        //Dpad controls flipper
+        if (gamepad1.dpad_up)
+            robot.flipper.setPower(robot.FLIPPER_POWER);
+        else if (gamepad1.dpad_down)
+            robot.flipper.setPower(-robot.FLIPPER_POWER);
+        else
+            robot.flipper.setPower(0);
 
         //State machine
         switch(currentState) {
@@ -99,7 +92,7 @@ public class FC_Tele_Op extends OpMode {
                 );
 
 
-                if(gamepad1.b)
+                if(gamepad1.back)
                     currentState = FIELD_CENTRIC_STATE;
 
                 break;
