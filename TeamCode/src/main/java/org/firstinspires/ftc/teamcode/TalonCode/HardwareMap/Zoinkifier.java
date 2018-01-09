@@ -28,10 +28,8 @@ public class Zoinkifier {
     public static final double MIN_DRIVE_POWER = .1;
     public static final double MAX_DRIVE_POWER = 1;
     public static final double DRIVE_POWER = 1;
-    //Other helpful constants, these have not yet been tested
-    public static final double INTAKE_RETRACTED_POSITION = .1;
-    public static final double INTAKE_DEPLOYED_POSITION = .9;
-    public static final double INTAKE_POWER = .5;
+    //Other helpful constants
+    public static final double INTAKE_POWER = 1;
     public static final double FLIPPER_POWER = .5;
 
     //Hardware map and telemetry variables allow for more interaction between this class and the one using it
@@ -99,19 +97,19 @@ public class Zoinkifier {
         bright.setPower(0);
     }
 
-    //A shortcut to move the intake servos to the active position
-    public void retractIntake() {
-        leftIntakeArm.setPosition(INTAKE_DEPLOYED_POSITION);
-        rightIntakeArm.setPosition(INTAKE_DEPLOYED_POSITION);
-    }
-
-    //A shortcut to pull the intake servos back in
+    //A shortcut to set the intake servos to their usual position
     public void deployIntake() {
-        leftIntakeArm.setPosition(.85);
-        rightIntakeArm.setPosition(.9);
+        leftIntakeArm.setPosition(.78);
+        rightIntakeArm.setPosition(.83);
     }
 
-    //A shortcut for running the intake motors, put true to make it run and false to make it brake
+    //A shortcut to move the intake servos all the way out
+    public void farOut() {
+        leftIntakeArm.setPosition(.95);
+        rightIntakeArm.setPosition(1);
+    }
+
+    //A shortcut for running the intake motors, put intake wheel powers in for parameters
     public void runIntake(double leftpower, double rightpower) {
             lintake.setPower(leftpower);
             rintake.setPower(rightpower);

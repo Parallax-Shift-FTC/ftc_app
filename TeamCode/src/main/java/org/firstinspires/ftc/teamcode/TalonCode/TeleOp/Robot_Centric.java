@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -22,7 +23,7 @@ import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
 centric Drive.
  */
 
-
+@Disabled
 @TeleOp(name = "Talon's Robot Centric", group = "Zoinkifier")
 public class Robot_Centric extends OpMode
 {
