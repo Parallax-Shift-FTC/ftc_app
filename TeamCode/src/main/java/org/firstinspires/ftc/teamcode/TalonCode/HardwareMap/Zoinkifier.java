@@ -31,7 +31,7 @@ public class Zoinkifier {
     //Other helpful constants, these have not yet been tested
     public static final double INTAKE_RETRACTED_POSITION = .1;
     public static final double INTAKE_DEPLOYED_POSITION = .9;
-    public static final double INTAKE_POWER = .5;
+    public static final double INTAKE_POWER = 1;
     public static final double FLIPPER_POWER = .5;
 
     //Hardware map and telemetry variables allow for more interaction between this class and the one using it
@@ -100,15 +100,15 @@ public class Zoinkifier {
     }
 
     //A shortcut to move the intake servos to the active position
-    public void retractIntake() {
-        leftIntakeArm.setPosition(INTAKE_DEPLOYED_POSITION);
-        rightIntakeArm.setPosition(INTAKE_DEPLOYED_POSITION);
+    public void farOutIntake() {
+        leftIntakeArm.setPosition(.95);
+        rightIntakeArm.setPosition(1);
     }
 
     //A shortcut to pull the intake servos back in
     public void deployIntake() {
-        leftIntakeArm.setPosition(.85);
-        rightIntakeArm.setPosition(.9);
+        leftIntakeArm.setPosition(.875);
+        rightIntakeArm.setPosition(.925);
     }
 
     //A shortcut for running the intake motors, put true to make it run and false to make it brake
