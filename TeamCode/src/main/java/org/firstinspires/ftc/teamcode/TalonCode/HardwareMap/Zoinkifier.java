@@ -99,8 +99,8 @@ public class Zoinkifier {
 
     //A shortcut to set the intake servos to their usual position
     public void deployIntake() {
-        leftIntakeArm.setPosition(.875);
-        rightIntakeArm.setPosition(.925);
+        leftIntakeArm.setPosition(.85);
+        rightIntakeArm.setPosition(.9);
     }
 
     //A shortcut to move the intake servos all the way out

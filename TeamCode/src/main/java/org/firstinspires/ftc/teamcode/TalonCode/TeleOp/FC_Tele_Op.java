@@ -33,6 +33,10 @@ public class FC_Tele_Op extends OpMode {
         //Changes the angle of the robot's motion with respect to the driver to its current angle when the start button is pressed on gamepad one
         if(gamepad1.y)
             angleFromDriver = robot.heading;
+        if(gamepad1.b)
+            robot.deployIntake();
+        else if(gamepad1.x)
+            robot.farOut();
 
         //Runs the intake spinners with bumpers
         if(gamepad1.left_bumper)
