@@ -51,8 +51,8 @@ public class Daquan_Hardware {
         fright = hwMap.dcMotor.get("fright");
         bleft = hwMap.dcMotor.get("bleft");
         bright = hwMap.dcMotor.get("bright");
-        fright.setDirection(DcMotor.Direction.REVERSE);
-        bright.setDirection(DcMotor.Direction.REVERSE);
+        bleft.setDirection(DcMotor.Direction.REVERSE);
+        fleft.setDirection(DcMotor.Direction.REVERSE);
 
         colorSensor = hwMap.colorSensor.get("color");
 
