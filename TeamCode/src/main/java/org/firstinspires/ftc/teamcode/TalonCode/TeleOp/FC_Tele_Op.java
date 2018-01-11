@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
 
 
@@ -13,7 +16,6 @@ public class FC_Tele_Op extends OpMode {
     //The angle that the robot should drive at relative to its starting position, Pi/2 corresponds to straight forward
     double angleFromDriver = Math.PI / 2;
     boolean firstTime = true;
-
 
     @Override   //Sets up the robot class so we can use its hardware map and variables
     public void init (){
@@ -30,6 +32,11 @@ public class FC_Tele_Op extends OpMode {
         robot.updateGyro();
         telemetry.addData("Gyro Heading", Math.toDegrees(robot.heading));
 
+        if(gamepad1.dpad_left)
+            robot.currentDrivePower = .5;
+        else
+            robot.currentDrivePower = robot.DRIVE_POWER;
+
         //Changes the angle of the robot's motion with respect to the driver to its current angle when the start button is pressed on gamepad one
         if(gamepad1.y)
             angleFromDriver = robot.heading;
@@ -45,7 +52,7 @@ public class FC_Tele_Op extends OpMode {
         else if (gamepad1.right_bumper)
             robot.runIntake(- robot.INTAKE_POWER, - robot.INTAKE_POWER);
         else
-            robot.runIntake(robot.INTAKE_POWER * 0.5 * (gamepad1.left_trigger - gamepad1.right_trigger), robot.INTAKE_POWER * 0.5 * ( - gamepad1.left_trigger + gamepad1.right_trigger));
+            robot.runIntake(0.35 * (gamepad1.left_trigger - gamepad1.right_trigger), 0.35 * ( - gamepad1.left_trigger + gamepad1.right_trigger));
 
         //Dpad controls flipper
         if (gamepad1.dpad_up)

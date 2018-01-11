@@ -7,8 +7,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforiaLocalizer;
 
 public class Zoinkifier {
 
@@ -22,6 +27,12 @@ public class Zoinkifier {
 
     //Public variables for other programs to utilize
     public double heading;
+
+    //Vuforia Variables
+    public static final String TAG = "Vuforia VuMark Sample";
+    public VuforiaTrackables relicTrackables;
+    public VuforiaTrackable relictrackable;
+    public ClosableVuforiaLocalizer vuforia;
 
     //Variables for our drive power; current is for individual instances to modify, the rest are constants
     public double currentDrivePower = 1;
@@ -99,8 +110,8 @@ public class Zoinkifier {
 
     //A shortcut to set the intake servos to their usual position
     public void deployIntake() {
-        leftIntakeArm.setPosition(.78);
-        rightIntakeArm.setPosition(.83);
+        leftIntakeArm.setPosition(.83);
+        rightIntakeArm.setPosition(.88);
     }
 
     //A shortcut to move the intake servos all the way out
@@ -120,5 +131,27 @@ public class Zoinkifier {
         heading = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + Math.PI / 2;
         if(heading > Math.PI)
             heading = heading - 2 * Math.PI;
+    }
+
+    public void intitializeVuforia() {
+        int cameraMonitorViewId = hwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hwMap.appContext.getPackageName());
+        ClosableVuforiaLocalizer.Parameters parameters = new ClosableVuforiaLocalizer.Parameters(cameraMonitorViewId);
+        parameters.vuforiaLicenseKey = "Aa07QPX/////AAAAGT4IBGftwkAmodz5uX1NKehqWSuZYAizMXyJgDjbMQz+h5mPdKPRRA9id11R2ad9e3w3E6aS1Nep0aXgwwqRtAAmh6tizyQQZRM5qF+foaOh9zbuyAis/ANMODT0X5fAo3J6DqPNlOT9Es04EMKR5rIGhrb91rn3X+ferq2phtQ/PhQGHt44rkhNXSI1OV2GaY4BErnIgSktLZB6bWf49Jd3RtnybC9BfsuOv/2re0pEiGAiF+GyTV5pvuyVVFXFMKaiIR+aDe8qBpKV5z+ZUIWUC+z989ERqh9SKWdfJkOJt6glYFx/fEy3o4g8HwYfVbU+xU1fxufN+M3A2uZZaSSowVbbDDgr9CGxSd6/Dskg";
+        parameters.cameraDirection = ClosableVuforiaLocalizer.CameraDirection.BACK;
+        this.vuforia = new ClosableVuforiaLocalizer(parameters);
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relictrackable = relicTrackables.get(0);
+        relictrackable.setName("relicVuMark");
+
+        relicTrackables.activate();
+    }
+
+    public void updateVuforia() {
+        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
+        if (vuMark != RelicRecoveryVuMark.UNKNOWN)
+            telemetry.addData("Vumark", vuMark);
+        else
+            telemetry.addData("Vumark", "Not Visible");
     }
 }

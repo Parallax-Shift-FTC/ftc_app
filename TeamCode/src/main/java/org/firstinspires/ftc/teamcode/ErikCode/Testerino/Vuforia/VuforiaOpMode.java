@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforia
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-@Disabled
+
 @Autonomous(name="VuMark Id Test", group ="Vumark")
 public class VuforiaOpMode extends LinearOpMode {
 
