@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -27,6 +26,8 @@ public class Zoinkifier {
 
     //Public variables for other programs to utilize
     public double heading;
+    public double xRotation;
+    public double yRotation;
 
     //Vuforia Variables
     public static final String TAG = "Vuforia VuMark Sample";
@@ -110,8 +111,8 @@ public class Zoinkifier {
 
     //A shortcut to set the intake servos to their usual position
     public void deployIntake() {
-        leftIntakeArm.setPosition(.83);
-        rightIntakeArm.setPosition(.88);
+        leftIntakeArm.setPosition(.85);
+        rightIntakeArm.setPosition(.89);
     }
 
     //A shortcut to move the intake servos all the way out
@@ -122,8 +123,25 @@ public class Zoinkifier {
 
     //A shortcut for running the intake motors, put intake wheel powers in for parameters
     public void runIntake(double leftpower, double rightpower) {
-            lintake.setPower(leftpower);
-            rintake.setPower(rightpower);
+        lintake.setPower(leftpower);
+        rintake.setPower(rightpower);
+    }
+
+    public void setDriveEncoders(double powerfl, double powerfr, double powerbl, double powerbr, int fl, int fr, int bl, int br) {
+        fleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        fleft.setTargetPosition(fl + fleft.getCurrentPosition());
+        fright.setTargetPosition(fr + fright.getCurrentPosition());
+        bleft.setTargetPosition(bl + bleft.getCurrentPosition());
+        bright.setTargetPosition(br + bright.getCurrentPosition());
+
+        fleft.setPower(powerfl);
+        fright.setPower(powerfr);
+        bleft.setPower(powerbl);
+        bright.setPower(powerbr);
     }
 
     //Updates the heading variable; add pi/2 to make the starting angle 90 degrees instead of 0
@@ -131,6 +149,8 @@ public class Zoinkifier {
         heading = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + Math.PI / 2;
         if(heading > Math.PI)
             heading = heading - 2 * Math.PI;
+        yRotation = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).secondAngle;
+        xRotation = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).thirdAngle;
     }
 
     public void intitializeVuforia() {

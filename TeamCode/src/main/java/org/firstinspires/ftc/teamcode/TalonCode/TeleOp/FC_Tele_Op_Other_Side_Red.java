@@ -3,15 +3,18 @@ package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
 
-@TeleOp(name = "TeleOp", group = "Zoinkifier")
-public class FC_Tele_Op extends OpMode {
+
+@TeleOp(name = "Whack TeleOp Red", group = "Zoinkifier")
+public class FC_Tele_Op_Other_Side_Red extends OpMode {
 
     Zoinkifier robot;
 
     //The angle that the robot should drive at relative to its starting position, Pi/2 corresponds to straight forward
-    double angleFromDriver = Math.PI / 2;
+    double angleFromDriver = 0;
     boolean firstTime = true;
 
     @Override   //Sets up the robot class so we can use its hardware map and variables
@@ -28,6 +31,7 @@ public class FC_Tele_Op extends OpMode {
 
         robot.updateGyro();
         telemetry.addData("Gyro Heading", Math.toDegrees(robot.heading));
+
         if(gamepad1.dpad_left)
             robot.currentDrivePower = .2;
         else
