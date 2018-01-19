@@ -98,7 +98,7 @@ public class Far_Blue extends LinearOpMode {
         telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
         //Drives forward using the encoders
-        robot.setDriveEncoders(.4,-.4, -.4, .4, 730, - 730, - 730, 730);
+        robot.setDriveEncoders(-.2,.2, .2, -.2, 730, - 730, - 730, 730);
 
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
