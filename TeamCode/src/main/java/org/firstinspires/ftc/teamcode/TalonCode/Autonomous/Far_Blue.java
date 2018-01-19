@@ -76,7 +76,7 @@ public class Far_Blue extends LinearOpMode {
 
         robot.updateGyro();
         double error = robot.heading + Math.PI / 2;
-        while(error > Math.toRadians(2) && opModeIsActive()) {
+        while(error > Math.toRadians(6) && opModeIsActive()) {
             robot.updateGyro();
             error = robot.heading + Math.PI / 2;
             robot.drive( .1 + error * 0.4 / Math.PI, - .1 - error * 0.4 / Math.PI,  .1 + error * 0.4 / Math.PI, - .1 - error * 0.4 / Math.PI);

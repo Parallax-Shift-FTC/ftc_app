@@ -39,7 +39,7 @@ public class Zoinkifier {
     public double currentDrivePower = 1;
     public static final double MIN_DRIVE_POWER = .1;
     public static final double MAX_DRIVE_POWER = 1;
-    public static final double DRIVE_POWER = 1;
+    public static final double DRIVE_POWER = .8;
     //Other helpful constants
     public static final double INTAKE_POWER = 1;
     public static final double FLIPPER_POWER = .5;
