@@ -31,7 +31,6 @@ public class FC_Tele_Op_Other_Side_Red extends OpMode {
 
         robot.updateGyro();
         telemetry.addData("Gyro Heading", Math.toDegrees(robot.heading));
-
         if(gamepad1.dpad_left)
             robot.currentDrivePower = .2;
         else
@@ -52,7 +51,7 @@ public class FC_Tele_Op_Other_Side_Red extends OpMode {
         else if (gamepad1.right_bumper)
             robot.runIntake(- robot.INTAKE_POWER, - robot.INTAKE_POWER);
         else
-            robot.runIntake(0.35 * (gamepad1.left_trigger - gamepad1.right_trigger), 0.35 * ( - gamepad1.left_trigger + gamepad1.right_trigger));
+            robot.runIntake(0.25 * (gamepad1.left_trigger - gamepad1.right_trigger), 0.25 * ( - gamepad1.left_trigger + gamepad1.right_trigger));
 
         //Dpad controls flipper
         if (gamepad1.dpad_up)
@@ -82,5 +81,10 @@ public class FC_Tele_Op_Other_Side_Red extends OpMode {
                 (Math.sin(moveAngle) - Math.cos(moveAngle)) * inputPower * robot.currentDrivePower + (gamepad1.left_stick_x) * robot.currentDrivePower,
                 (Math.sin(moveAngle) + Math.cos(moveAngle)) * inputPower * robot.currentDrivePower + (- gamepad1.left_stick_x) * robot.currentDrivePower
         );
+
+        telemetry.addData("Front Left Encoder", robot.fleft.getCurrentPosition());
+        telemetry.addData("Front Right Encoder", robot.fright.getCurrentPosition());
+        telemetry.addData("Back Left Encoder", robot.bleft.getCurrentPosition());
+        telemetry.addData("Back Right Encoder", robot.bright.getCurrentPosition());
     }
 }
