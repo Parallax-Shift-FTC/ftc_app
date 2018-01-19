@@ -30,6 +30,8 @@ public class Far_Blue extends LinearOpMode {
         robot.flipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         waitForStart();
 
+        robot.deployIntake();
+
         //Drives until the robot is off the balancing stone, then stops
         robot.drive(.2,.2,.2,.2);
 
@@ -84,20 +86,50 @@ public class Far_Blue extends LinearOpMode {
         }
         robot.brake();
 
-/*        telemetry.addData("State", "Drive Forward With Encoders");
+        telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
         //Drives forward using the encoders
-        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -500,-500,-500,-500);
+        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -400,-400,-400,-400);
 
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
-        robot.brake();*/
-        /*
-        telemetry.addData("State", "Drive Sideways With Encoders");
-        telemetry.update();
-        robot.setDriveEncoders(.4,-.4, -.4, .4, 1000, - 1000, - 1000, 1000);
-        sleep(5000);
+        robot.brake();
 
+        telemetry.addData("State", "Drive Forward With Encoders");
+        telemetry.update();
+        //Drives forward using the encoders
+        robot.setDriveEncoders(.4,-.4, -.4, .4, 730, - 730, - 730, 730);
+
+        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+            idle();
+        robot.brake();
+
+        robot.flipper.setTargetPosition(500);
+        robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
+        while(robot.flipper.isBusy() && opModeIsActive())
+            idle();
+
+        robot.flipper.setPower(0);
+
+        robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
+        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+            idle();
+
+        robot.setDriveEncoders(-.2,-.2,-.2,-.2, -600, -600, -600, -600);
+        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+            idle();
+
+        robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
+        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+            idle();
+
+        robot.flipper.setTargetPosition(0);
+        robot.flipper.setPower(-robot.FLIPPER_POWER * 1/2);
+        while(robot.flipper.isBusy() && opModeIsActive())
+            idle();
+
+        robot.flipper.setPower(0);
+        /*
         telemetry.addData("State", "Turn to Correct Angle");
         telemetry.update();
         //Turns the robot until it is perpendicular to the cryptobox

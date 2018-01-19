@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforiaLocalizer;
@@ -31,10 +32,20 @@ public class FC_Tele_Op_Other_Side_Red extends OpMode {
 
         robot.updateGyro();
         telemetry.addData("Gyro Heading", Math.toDegrees(robot.heading));
-        if(gamepad1.dpad_left)
-            robot.currentDrivePower = .2;
-        else
+        if(gamepad1.dpad_left && robot.currentDrivePower != 0.3) {
+            robot.currentDrivePower = 0.3;
+            robot.fleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.fright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.bleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+        if(!gamepad1.dpad_left && robot.currentDrivePower == 0.3) {
             robot.currentDrivePower = robot.DRIVE_POWER;
+            robot.fleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.fright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.bleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.bright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
 
         //Changes the angle of the robot's motion with respect to the driver to its current angle when the start button is pressed on gamepad one
         if(gamepad1.y)
