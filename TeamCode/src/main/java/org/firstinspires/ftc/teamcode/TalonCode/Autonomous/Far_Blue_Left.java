@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.TalonCode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
 
-@Autonomous(name = "Far Blue Auto", group = "Autonomous")
-public class Far_Blue extends LinearOpMode {
+@Disabled
+@Autonomous(name = "Far Blue Left Auto", group = "Autonomous")
+public class Far_Blue_Left extends LinearOpMode {
 
     Zoinkifier robot;
 
@@ -31,6 +33,27 @@ public class Far_Blue extends LinearOpMode {
         waitForStart();
 
         robot.deployIntake();
+
+        robot.bottomServo.setPosition(0.55);
+        robot.topServo.setPosition(0.72);
+        sleep(200);
+        robot.bottomServo.setPosition(0.68);
+        sleep(500);
+
+        telemetry.addData("red", robot.colorSensor.red());
+        telemetry.addData("blue", robot.colorSensor.blue());
+        telemetry.update();
+        if(robot.colorSensor.red() > robot.colorSensor.blue())
+            robot.topServo.setPosition(.55);
+        if(robot.colorSensor.red() < robot.colorSensor.blue())
+            robot.topServo.setPosition(.95);
+
+        sleep(1000);
+        robot.bottomServo.setPosition(0.55);
+        sleep(200);
+        robot.topServo.setPosition(0.25);
+        robot.bottomServo.setPosition(0.03);
+        sleep(500);
 
         //Drives until the robot is off the balancing stone, then stops
         robot.drive(.2,.2,.2,.2);
@@ -89,16 +112,16 @@ public class Far_Blue extends LinearOpMode {
         telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
         //Drives forward using the encoders
-        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -400,-400,-400,-400);
+        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -600,-600,-600,-600);
 
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
         robot.brake();
 
-        telemetry.addData("State", "Drive Forward With Encoders");
+        telemetry.addData("State", "Drive Sideways With Encoders");
         telemetry.update();
         //Drives forward using the encoders
-        robot.setDriveEncoders(-.2,.2, .2, -.2, 730, - 730, - 730, 730);
+        robot.setDriveEncoders(-.2,.2, .2, -.2, -400,  400,  400, -400);
 
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
@@ -129,32 +152,5 @@ public class Far_Blue extends LinearOpMode {
             idle();
 
         robot.flipper.setPower(0);
-        /*
-        telemetry.addData("State", "Turn to Correct Angle");
-        telemetry.update();
-        //Turns the robot until it is perpendicular to the cryptobox
-        robot.updateGyro();
-        while(robot.heading + Math.PI/2 > Math.toRadians(1)) {
-            robot.drive(.1,.1,-.1,-.1);
-            robot.updateGyro();
-        }
-        while(robot.heading + Math.PI/2 < Math.toRadians(-1)) {
-            robot.drive(-.1,-.1,.1,.1);
-            robot.updateGyro();
-        }
-
-        telemetry.addData("State", "Flip up");
-        telemetry.update();
-        //Flips the block in
-        robot.flipper.setTargetPosition(480);
-        robot.flipper.setPower(-0.3);
-        sleep(1000);
-
-        telemetry.addData("State", "Flip back down");
-        telemetry.update();
-        //Puts the flipper back in its starting position
-        robot.flipper.setTargetPosition(0);
-        robot.flipper.setPower(0.3);
-        sleep(1000);*/
     }
 }

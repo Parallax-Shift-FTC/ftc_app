@@ -64,7 +64,7 @@ public class VuforiaOpMode extends LinearOpMode {
                     double rX = rot.firstAngle;
                     double rY = rot.secondAngle;
                     double rZ = rot.thirdAngle;
-
+vuforia.close();
                 }
             }
             else

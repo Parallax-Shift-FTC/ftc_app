@@ -94,5 +94,7 @@ public class FC_Tele_Op extends OpMode {
         telemetry.addData("Front Right Encoder", robot.fright.getCurrentPosition());
         telemetry.addData("Back Left Encoder", robot.bleft.getCurrentPosition());
         telemetry.addData("Back Right Encoder", robot.bright.getCurrentPosition());
+        telemetry.addData("Blue", robot.colorSensor.blue());
+        telemetry.addData("Red", robot.colorSensor.red());
     }
 }
