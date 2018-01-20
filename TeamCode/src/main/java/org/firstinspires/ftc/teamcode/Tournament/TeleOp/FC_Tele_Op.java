@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.TalonCode.TeleOp;
+package org.firstinspires.ftc.teamcode.Tournament.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
+import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
 @TeleOp(name = "TeleOp", group = "Zoinkifier")
 public class FC_Tele_Op extends OpMode {

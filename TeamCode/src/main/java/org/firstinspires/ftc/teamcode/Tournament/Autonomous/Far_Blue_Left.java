@@ -1,24 +1,16 @@
-package org.firstinspires.ftc.teamcode.TalonCode.Autonomous;
+package org.firstinspires.ftc.teamcode.Tournament.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia.ClosableVuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
+import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@Autonomous(name = "Far Blue Vu. Auto", group = "Autonomous")
-public class Far_Blue_Vuforia extends LinearOpMode {
+@Autonomous(name = "Far Blue Auto Left", group = "Autonomous")
+public class Far_Blue_Left extends LinearOpMode {
 
     Zoinkifier robot;
-    ClosableVuforiaLocalizer vuforia;
-    final int LEFT = 400;
-    final int CENNTER = 1200;
-    final int RIGHT = 2000;
-    int strafeDistance;
+    int strafeDistance = robot.FAR_STONE_CLOSE_SLOT;
 
     @Override
     public void runOpMode() {
@@ -41,33 +33,8 @@ public class Far_Blue_Vuforia extends LinearOpMode {
         robot.bottomServo.setPosition(0.03);
         robot.topServo.setPosition(0.25);
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        ClosableVuforiaLocalizer.Parameters parameters = new ClosableVuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "Aa07QPX/////AAAAGT4IBGftwkAmodz5uX1NKehqWSuZYAizMXyJgDjbMQz+h5mPdKPRRA9id11R2ad9e3w3E6aS1Nep0aXgwwqRtAAmh6tizyQQZRM5qF+foaOh9zbuyAis/ANMODT0X5fAo3J6DqPNlOT9Es04EMKR5rIGhrb91rn3X+ferq2phtQ/PhQGHt44rkhNXSI1OV2GaY4BErnIgSktLZB6bWf49Jd3RtnybC9BfsuOv/2re0pEiGAiF+GyTV5pvuyVVFXFMKaiIR+aDe8qBpKV5z+ZUIWUC+z989ERqh9SKWdfJkOJt6glYFx/fEy3o4g8HwYfVbU+xU1fxufN+M3A2uZZaSSowVbbDDgr9CGxSd6/Dskg";
-        parameters.cameraDirection = ClosableVuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = new ClosableVuforiaLocalizer(parameters);
-
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relictrackable = relicTrackables.get(0);
-        relictrackable.setName("relicVuMark");
-
-        relicTrackables.activate();
-
         waitForStart();
 
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
-            vuMark = RelicRecoveryVuMark.from(relictrackable);
-            idle();
-        }
-
-        if(vuMark == RelicRecoveryVuMark.RIGHT)
-            strafeDistance = RIGHT;
-        else if(vuMark == RelicRecoveryVuMark.CENTER)
-            strafeDistance = CENNTER;
-        else
-            strafeDistance = LEFT;
-        vuforia.close();
         robot.deployIntake();
 
         robot.bottomServo.setPosition(0.55);
@@ -77,18 +44,13 @@ public class Far_Blue_Vuforia extends LinearOpMode {
         sleep(500);
 
         //Hits appropriate jewel
+        telemetry.addData("Red", robot.colorSensor.red());
+        telemetry.addData("Blue", robot.colorSensor.blue());
+        telemetry.update();
         if(robot.colorSensor.red() > robot.colorSensor.blue())
-            robot.topServo.setPosition(.65);
+            robot.topServo.setPosition(.60);
         else if(robot.colorSensor.red() < robot.colorSensor.blue())
-            robot.topServo.setPosition(.85);
-        else {
-            sleep(1000);
-            if(robot.colorSensor.red() > robot.colorSensor.blue())
-                robot.topServo.setPosition(.65);
-            else if(robot.colorSensor.red() < robot.colorSensor.blue())
-
-                robot.topServo.setPosition(.85);
-        }
+            robot.topServo.setPosition(.86);
 
         sleep(1000);
         robot.bottomServo.setPosition(0.55);
@@ -176,6 +138,8 @@ public class Far_Blue_Vuforia extends LinearOpMode {
             idle();
 
         robot.flipper.setPower(0);
+
+        sleep(1000);
 
         robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())

@@ -1,17 +1,16 @@
-package org.firstinspires.ftc.teamcode.TalonCode.Autonomous;
+package org.firstinspires.ftc.teamcode.Tournament.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
+import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@Disabled
-@Autonomous(name = "Far Blue Center Auto", group = "Autonomous")
-public class Far_Blue_Center extends LinearOpMode {
+@Autonomous(name = "Close Red Auto Left", group = "Autonomous")
+public class Close_Red_Left extends LinearOpMode {
 
     Zoinkifier robot;
+    int strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
 
     @Override
     public void runOpMode() {
@@ -30,6 +29,10 @@ public class Far_Blue_Center extends LinearOpMode {
         robot.bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         robot.flipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.bottomServo.setPosition(0.03);
+        robot.topServo.setPosition(0.25);
+
         waitForStart();
 
         robot.deployIntake();
@@ -40,13 +43,14 @@ public class Far_Blue_Center extends LinearOpMode {
         robot.bottomServo.setPosition(0.68);
         sleep(500);
 
-        telemetry.addData("red", robot.colorSensor.red());
-        telemetry.addData("blue", robot.colorSensor.blue());
+        //Hits appropriate jewel
+        telemetry.addData("Red", robot.colorSensor.red());
+        telemetry.addData("Blue", robot.colorSensor.blue());
         telemetry.update();
         if(robot.colorSensor.red() > robot.colorSensor.blue())
-            robot.topServo.setPosition(.55);
-        if(robot.colorSensor.red() < robot.colorSensor.blue())
-            robot.topServo.setPosition(.95);
+            robot.topServo.setPosition(.60);
+        else if(robot.colorSensor.red() < robot.colorSensor.blue())
+            robot.topServo.setPosition(.86);
 
         sleep(1000);
         robot.bottomServo.setPosition(0.55);
@@ -56,7 +60,7 @@ public class Far_Blue_Center extends LinearOpMode {
         sleep(500);
 
         //Drives until the robot is off the balancing stone, then stops
-        robot.drive(.2,.2,.2,.2);
+        robot.drive(-.2,-.2,-.2,-.2);
 
         telemetry.addData("State", "Drive until Tilted");
         telemetry.update();
@@ -83,14 +87,14 @@ public class Far_Blue_Center extends LinearOpMode {
         telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
         //Drives forward using the encoders
-        robot.setDriveEncoders(.4,.4,.4,.4, 500,500,500,500);
+        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -500,-500,-500,-500);
 
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
 
         robot.brake();
 
-        telemetry.addData("State", "Do a 180");
+        telemetry.addData("State", "Turn 90");
         telemetry.update();
         robot.updateGyro();
 
@@ -100,11 +104,11 @@ public class Far_Blue_Center extends LinearOpMode {
         robot.bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         robot.updateGyro();
-        double error = robot.heading + Math.PI / 2;
+        double error = robot.heading;
         while(error > Math.toRadians(6) && opModeIsActive()) {
             robot.updateGyro();
-            error = robot.heading + Math.PI / 2;
-            robot.drive( .1 + error * 0.4 / Math.PI, - .1 - error * 0.4 / Math.PI,  .1 + error * 0.4 / Math.PI, - .1 - error * 0.4 / Math.PI);
+            error = robot.heading;
+            robot.drive( .1 + error * 0.4 / (Math.PI/2), - .1 - error * 0.4 / (Math.PI/2),  .1 + error * 0.4 / (Math.PI/2), - .1 - error * 0.4 / (Math.PI/2));
             idle();
         }
         robot.brake();
@@ -112,7 +116,7 @@ public class Far_Blue_Center extends LinearOpMode {
         telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
         //Drives forward using the encoders
-        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -600,-600,-600,-600);
+        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -200,-200,-200,-200);
 
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
@@ -120,10 +124,10 @@ public class Far_Blue_Center extends LinearOpMode {
 
         telemetry.addData("State", "Drive Sideways With Encoders");
         telemetry.update();
-        //Drives forward using the encoders
-        robot.setDriveEncoders(-.2,.2, .2, -.2, -1200,  1200,  1200, -1200);
+        //Drives to the correct place using the encoders
+        robot.setDriveEncoders(-.2, .2, .2, -.2, -strafeDistance, strafeDistance, strafeDistance, -strafeDistance);
 
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
         robot.brake();
 
@@ -133,6 +137,8 @@ public class Far_Blue_Center extends LinearOpMode {
             idle();
 
         robot.flipper.setPower(0);
+
+        sleep(1000);
 
         robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())

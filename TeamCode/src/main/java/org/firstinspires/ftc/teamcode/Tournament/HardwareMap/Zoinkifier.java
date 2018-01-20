@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TalonCode.HardwareMap;
+package org.firstinspires.ftc.teamcode.Tournament.HardwareMap;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -39,6 +39,14 @@ public class Zoinkifier {
     //Other helpful constants
     public static final double INTAKE_POWER = 1;
     public static final double FLIPPER_POWER = .5;
+
+    public static final int FAR_STONE_CLOSE_SLOT = 450;
+    public static final int FAR_STONE_MIDDLE_SLOT = 1250;
+    public static final int FAR_STONE_FAR_SLOT = 2050;
+
+    public static final int CLOSE_STONE_CLOSE_SLOT = 450;
+    public static final int CLOSE_STONE_MIDDLE_SLOT = 1250;
+    public static final int CLOSE_STONE_FAR_SLOT = 2050;
 
     //Hardware map and telemetry variables allow for more interaction between this class and the one using it
     private HardwareMap hardwareMap;

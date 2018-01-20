@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ErikCode.Testerino.Vuforia;
+package org.firstinspires.ftc.teamcode.Tournament;
 
 import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
 

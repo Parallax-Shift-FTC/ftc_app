@@ -1,17 +1,16 @@
-package org.firstinspires.ftc.teamcode.TalonCode.Autonomous;
+package org.firstinspires.ftc.teamcode.Tournament.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.TalonCode.HardwareMap.Zoinkifier;
+import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@Disabled
-@Autonomous(name = "Far Blue Left Auto", group = "Autonomous")
-public class Far_Blue_Left extends LinearOpMode {
+@Autonomous(name = "Far Blue Auto Center", group = "Autonomous")
+public class Far_Blue_Center extends LinearOpMode {
 
     Zoinkifier robot;
+    int strafeDistance = robot.FAR_STONE_MIDDLE_SLOT;
 
     @Override
     public void runOpMode() {
@@ -30,6 +29,10 @@ public class Far_Blue_Left extends LinearOpMode {
         robot.bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         robot.flipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.bottomServo.setPosition(0.03);
+        robot.topServo.setPosition(0.25);
+
         waitForStart();
 
         robot.deployIntake();
@@ -40,13 +43,14 @@ public class Far_Blue_Left extends LinearOpMode {
         robot.bottomServo.setPosition(0.68);
         sleep(500);
 
-        telemetry.addData("red", robot.colorSensor.red());
-        telemetry.addData("blue", robot.colorSensor.blue());
+        //Hits appropriate jewel
+        telemetry.addData("Red", robot.colorSensor.red());
+        telemetry.addData("Blue", robot.colorSensor.blue());
         telemetry.update();
         if(robot.colorSensor.red() > robot.colorSensor.blue())
-            robot.topServo.setPosition(.55);
-        if(robot.colorSensor.red() < robot.colorSensor.blue())
-            robot.topServo.setPosition(.95);
+            robot.topServo.setPosition(.60);
+        else if(robot.colorSensor.red() < robot.colorSensor.blue())
+            robot.topServo.setPosition(.86);
 
         sleep(1000);
         robot.bottomServo.setPosition(0.55);
@@ -120,12 +124,13 @@ public class Far_Blue_Left extends LinearOpMode {
 
         telemetry.addData("State", "Drive Sideways With Encoders");
         telemetry.update();
-        //Drives forward using the encoders
-        robot.setDriveEncoders(-.2,.2, .2, -.2, -400,  400,  400, -400);
+        //Drives to the correct place using the encoders
+        robot.setDriveEncoders(-.2, .2, .2, -.2, -strafeDistance, strafeDistance, strafeDistance, -strafeDistance);
 
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
         robot.brake();
+
 
         robot.flipper.setTargetPosition(500);
         robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
@@ -133,6 +138,8 @@ public class Far_Blue_Left extends LinearOpMode {
             idle();
 
         robot.flipper.setPower(0);
+
+        sleep(1000);
 
         robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
