@@ -13,19 +13,21 @@ import org.firstinspires.ftc.teamcode.Tournament.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@Autonomous(name="VuMark Id Test", group ="Vumark")
-public class VuforiaOpMode extends LinearOpMode {
+@Autonomous(name="Vuforia and Sensor Test", group ="Autonomous")
+public class VuforiaSensorTest extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
     OpenGLMatrix lastLocation = null;
     ClosableVuforiaLocalizer vuforia;
+    Zoinkifier robot;
 
     @Override
     public void runOpMode()
     {
-
+        robot = new Zoinkifier(hardwareMap);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         ClosableVuforiaLocalizer.Parameters parameters = new ClosableVuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "Aa07QPX/////AAAAGT4IBGftwkAmodz5uX1NKehqWSuZYAizMXyJgDjbMQz+h5mPdKPRRA9id11R2ad9e3w3E6aS1Nep0aXgwwqRtAAmh6tizyQQZRM5qF+foaOh9zbuyAis/ANMODT0X5fAo3J6DqPNlOT9Es04EMKR5rIGhrb91rn3X+ferq2phtQ/PhQGHt44rkhNXSI1OV2GaY4BErnIgSktLZB6bWf49Jd3RtnybC9BfsuOv/2re0pEiGAiF+GyTV5pvuyVVFXFMKaiIR+aDe8qBpKV5z+ZUIWUC+z989ERqh9SKWdfJkOJt6glYFx/fEy3o4g8HwYfVbU+xU1fxufN+M3A2uZZaSSowVbbDDgr9CGxSd6/Dskg";
@@ -43,6 +45,11 @@ public class VuforiaOpMode extends LinearOpMode {
 
         while (opModeIsActive())
         {
+            telemetry.addData("Color Sensor Red", robot.colorSensor.red());
+            telemetry.addData("Color Sensor Blue", robot.colorSensor.blue());
+            robot.updateGyro();
+            telemetry.addData("Gyro Sensor Heading", Math.toDegrees(robot.heading));
+            telemetry.addData("Gyro Sensor Y Axis Rotation", Math.toDegrees(robot.yRotation));
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
             if(vuMark != RelicRecoveryVuMark.UNKNOWN)
             {

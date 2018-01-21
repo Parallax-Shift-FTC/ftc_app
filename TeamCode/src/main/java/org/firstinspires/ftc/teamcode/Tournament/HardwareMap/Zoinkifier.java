@@ -2,64 +2,56 @@ package org.firstinspires.ftc.teamcode.Tournament.HardwareMap;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
 public class Zoinkifier {
 
     //Empty variables for the hardware map:
-    //Fleft-bright are our mecanum drive motors, lintake/rintake are the Rev motors that spin our intake spinners, flipper is the motor on the flipper, and relicWinch will be the motor that powers our relic mechanism
+    //Fleft, fright, bleft, bright(HD Hex REV Motor) are our mecanum drive motors, lintake/rintake
+    //(Core Hex REV Motor) turn our intake spinners, and flipper(Andymark NeveRest 40) is the motor
+    //attached to the flipper
     public DcMotor fleft, fright, bleft, bright, lintake, rintake, flipper;
-    //Servo names are self-explanatory, the grabbers are on our relic mechanism
-    public Servo leftIntakeArm, rightIntakeArm, bottomServo, topServo;
-    //Sensor names are self-explanatory
+    //leftIntakeArm and rightIntakeArm are the servos that the intake is mounted on, and topServo
+    //and bottomServo are the servos on the jewel hitter
+    public Servo leftIntakeArm, rightIntakeArm, topServo, bottomServo;
+    //gyroSensor is a BNO055IMU sensor inside our REV Hub, colorSensor is a REV Color/Range Sensor
     public BNO055IMU gyroSensor;
-    
     public ColorSensor colorSensor;
 
-    //Public variables for other programs to utilize
+    //Gyro Sensor Variables
     public double heading;
-    public double xRotation;
     public double yRotation;
 
-    //Vuforia Variables
-    public static final String TAG = "Vuforia VuMark Sample";
-
-    //Variables for our drive power; current is for individual instances to modify, the rest are constants
+    //Variables for our drive power in tele-op; currentDrivePower is for individual instances to
+    //modify, DRIVE_POWER is the main cruising speed, and SLOW_POWER is for aligning with the
+    //cryptobox
     public double currentDrivePower = 1;
-    public static final double MIN_DRIVE_POWER = .1;
-    public static final double MAX_DRIVE_POWER = 1;
+    public static final double SLOW_POWER = 0.3;
     public static final double DRIVE_POWER = 0.65;
-    //Other helpful constants
-    public static final double INTAKE_POWER = 1;
+    //Powers for the flipper and intake motors
     public static final double FLIPPER_POWER = .5;
+    public static final double INTAKE_POWER = 1;
 
+    //Encoder values for lining up with the cryptobox in autonomous
     public static final int FAR_STONE_CLOSE_SLOT = 450;
     public static final int FAR_STONE_MIDDLE_SLOT = 1250;
     public static final int FAR_STONE_FAR_SLOT = 2050;
+    public static final int CLOSE_STONE_CLOSE_SLOT = 250;
+    public static final int CLOSE_STONE_MIDDLE_SLOT = 1050;
+    public static final int CLOSE_STONE_FAR_SLOT = 1850;
 
-    public static final int CLOSE_STONE_CLOSE_SLOT = 450;
-    public static final int CLOSE_STONE_MIDDLE_SLOT = 1250;
-    public static final int CLOSE_STONE_FAR_SLOT = 2050;
-
-    //Hardware map and telemetry variables allow for more interaction between this class and the one using it
+    //Empty hardwareMap variable to be filled in the constructor
     private HardwareMap hardwareMap;
-    private Telemetry telemetry;
 
-    //Constructor; Put in the hardware map and telemetry of your current program
-    //Call this during initialization, add Vuforia later
-    public Zoinkifier(HardwareMap hardwareMap, Telemetry telem) {
-        hardwareMap = hardwareMap;
-        telemetry = telem;
-
-        telemetry.addData("Ready to begin", false);
-        telemetry.update();
+    //Constructor; Put in the hardware map and telemetry of your current program, call during init()
+    public Zoinkifier(HardwareMap harwareMap) {
+        //This allows us to access the hardware of the program that uses the constructor
+        hardwareMap = harwareMap;
 
         //Setting up our motors
         fleft = hardwareMap.dcMotor.get("fleft");
@@ -70,24 +62,23 @@ public class Zoinkifier {
         rintake = hardwareMap.dcMotor.get("rintake");
         flipper = hardwareMap.dcMotor.get("flipper");
 
+        //Reversing motors so that the drive motors and intake motors go the same way when given a
+        //positive value
         fleft.setDirection(DcMotor.Direction.REVERSE);
         bleft.setDirection(DcMotor.Direction.REVERSE);
         lintake.setDirection(DcMotor.Direction.REVERSE);
 
-        //Setting up our servos and setting them to their initial positions (will have to modify)
+        //Setting up our servos
         leftIntakeArm= hardwareMap.servo.get("left intake arm");
         rightIntakeArm = hardwareMap.servo.get("right intake arm");
         bottomServo = hardwareMap.servo.get("bottom servo");
         topServo = hardwareMap.servo.get("top servo");
 
-        bottomServo.setPosition(0.03);
-        topServo.setPosition(0.25);
-
+        //Reversing the right intake servo so that the intake servos go the same way
         rightIntakeArm.setDirection(Servo.Direction.REVERSE);
-        
-        colorSensor = hardwareMap.colorSensor.get("color sensor");
 
         //Setting up sensors
+        colorSensor = hardwareMap.colorSensor.get("color sensor");
         gyroSensor = hardwareMap.get(BNO055IMU.class, "gyro");
 
         //Additional gyro setup
@@ -99,9 +90,6 @@ public class Zoinkifier {
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         gyroSensor.initialize(parameters);
-
-        telemetry.addData("Ready to begin", true);
-        telemetry.update();
     }
 
     //A shortcut for moving the robot wheels
@@ -120,7 +108,7 @@ public class Zoinkifier {
         bright.setPower(0);
     }
 
-    //A shortcut to set the intake servos to their usual position
+    //A shortcut to set the intake servos to their normal position
     public void deployIntake() {
         leftIntakeArm.setPosition(.85);
         rightIntakeArm.setPosition(.90);
@@ -138,6 +126,7 @@ public class Zoinkifier {
         rintake.setPower(rightpower);
     }
 
+    //A shortcut to set the encoder values for the robot and set the power to them
     public void setDriveEncoders(double powerfl, double powerfr, double powerbl, double powerbr, int fl, int fr, int bl, int br) {
         fleft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         fright.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -155,12 +144,12 @@ public class Zoinkifier {
         bright.setPower(powerbr);
     }
 
-    //Updates the heading variable; add pi/2 to make the starting angle 90 degrees instead of 0
+    //Updates the heading variable; add pi/2 to make the starting angle 90 degrees instead of 0 for
+    //the heading variable, yRotation is used for autonomous
     public void updateGyro() {
         heading = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle + Math.PI / 2;
         if(heading > Math.PI)
             heading = heading - 2 * Math.PI;
         yRotation = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).secondAngle;
-        xRotation = gyroSensor.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).thirdAngle;
     }
 }
