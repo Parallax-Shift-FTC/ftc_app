@@ -40,7 +40,7 @@ public class Close_Red extends LinearOpMode {
         robot.flipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Initializes the jewel arm servos
-        robot.bottomServo.setPosition(0.03);
+        robot.bottomServo.setPosition(0);
         robot.topServo.setPosition(0.25);
 
         //Sets up vuforia
@@ -62,18 +62,22 @@ public class Close_Red extends LinearOpMode {
         robot.deployIntake();
 
         //Waits until the robot scans the vumark, then figures out what cryptobox to put the glyph
-        //in anc closes vuforia to conserve battery
+        //in anc closes vuforia to conserve battery. If vuforia doesn't work after 5 seconds, it
+        //times out and just goes for the closest slot
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
+        robot.timer.reset();
+        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }
-        if(vuMark == RelicRecoveryVuMark.RIGHT)
+        if(vuMark == RelicRecoveryVuMark.UNKNOWN)
             strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
+        if(vuMark == RelicRecoveryVuMark.RIGHT)
+            strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
         else if(vuMark == RelicRecoveryVuMark.CENTER)
             strafeDistance = robot.CLOSE_STONE_MIDDLE_SLOT;
         else
-            strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
+            strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
         vuforia.close();
 
         //Moves the sensor into position and takes a reading from the color sensor, then hits the
@@ -106,7 +110,7 @@ public class Close_Red extends LinearOpMode {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation < Math.toRadians(1) && opModeIsActive());
+        while(robot.yRotation < Math.toRadians(2) && opModeIsActive());
         telemetry.addData("State", "Drive until not Tilted");
         telemetry.update();
         sleep(250);
@@ -114,7 +118,7 @@ public class Close_Red extends LinearOpMode {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation > Math.toRadians(1) && opModeIsActive());
+        while(robot.yRotation > Math.toRadians(2) && opModeIsActive());
         robot.brake();
 
         //Drives forward using the encoders

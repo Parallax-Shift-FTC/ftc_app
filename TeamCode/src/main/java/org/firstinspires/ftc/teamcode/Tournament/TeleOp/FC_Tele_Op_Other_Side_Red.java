@@ -30,7 +30,7 @@ public class FC_Tele_Op_Other_Side_Red extends OpMode {
         //Initializes servos here because we can't do it in initialization
         if(firstTime) {
             robot.deployIntake();
-            robot.bottomServo.setPosition(0.03);
+            robot.bottomServo.setPosition(0);
             robot.topServo.setPosition(0.25);
             firstTime = false;
         }

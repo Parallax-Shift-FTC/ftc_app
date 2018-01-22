@@ -40,7 +40,7 @@ public class Far_Red extends LinearOpMode {
         robot.flipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Initializes the jewel arm servos
-        robot.bottomServo.setPosition(0.03);
+        robot.bottomServo.setPosition(0);
         robot.topServo.setPosition(0.25);
 
         //Sets up vuforia
@@ -62,12 +62,16 @@ public class Far_Red extends LinearOpMode {
         robot.deployIntake();
 
         //Waits until the robot scans the vumark, then figures out what cryptobox to put the glyph
-        //in anc closes vuforia to conserve battery
+        //in anc closes vuforia to conserve battery. If vuforia doesn't work after 5 seconds, it
+        //times out and just goes for the closest slot
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
+        robot.timer.reset();
+        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }
+        if(vuMark == RelicRecoveryVuMark.UNKNOWN)
+            strafeDistance = robot.FAR_STONE_CLOSE_SLOT;
         if(vuMark == RelicRecoveryVuMark.RIGHT)
             strafeDistance = robot.FAR_STONE_CLOSE_SLOT;
         else if(vuMark == RelicRecoveryVuMark.CENTER)
@@ -106,7 +110,7 @@ public class Far_Red extends LinearOpMode {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation < Math.toRadians(1) && opModeIsActive());
+        while(robot.yRotation < Math.toRadians(2) && opModeIsActive());
         telemetry.addData("State", "Drive until not Tilted");
         telemetry.update();
         sleep(250);
@@ -114,22 +118,13 @@ public class Far_Red extends LinearOpMode {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation > Math.toRadians(1) && opModeIsActive());
+        while(robot.yRotation > Math.toRadians(2) && opModeIsActive());
         robot.brake();
 
         //Drives forward using the encoders
         telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
-        robot.setDriveEncoders(.4,.4,.4,.4, 500,500,500,500);
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
-            idle();
-        robot.brake();
-
-        //Drives forward to get close to the cryptobox
-        telemetry.addData("State", "Drive Forward With Encoders");
-        telemetry.update();
-        //Drives forward using the encoders
-        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -600,-600,-600,-600);
+        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -1100,-1100,-1100,-1100);
         while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
         robot.brake();

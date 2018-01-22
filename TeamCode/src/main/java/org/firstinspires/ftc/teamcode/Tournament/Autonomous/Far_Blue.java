@@ -40,7 +40,7 @@ public class Far_Blue extends LinearOpMode {
         robot.flipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Initializes the jewel arm servos
-        robot.bottomServo.setPosition(0.03);
+        robot.bottomServo.setPosition(0);
         robot.topServo.setPosition(0.25);
 
         //Sets up vuforia
@@ -62,12 +62,16 @@ public class Far_Blue extends LinearOpMode {
         robot.deployIntake();
 
         //Waits until the robot scans the vumark, then figures out what cryptobox to put the glyph
-        //in anc closes vuforia to conserve battery
+        //in anc closes vuforia to conserve battery. If vuforia doesn't work after 5 seconds, it
+        //times out and just goes for the closest slot
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
+        robot.timer.reset();
+        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }
+        if(vuMark == RelicRecoveryVuMark.UNKNOWN)
+            strafeDistance = robot.FAR_STONE_CLOSE_SLOT;
         if(vuMark == RelicRecoveryVuMark.RIGHT)
             strafeDistance = robot.FAR_STONE_FAR_SLOT;
         else if(vuMark == RelicRecoveryVuMark.CENTER)

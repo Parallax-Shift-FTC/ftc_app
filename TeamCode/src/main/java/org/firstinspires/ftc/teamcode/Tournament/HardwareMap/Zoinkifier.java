@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Zoinkifier {
 
@@ -39,11 +40,14 @@ public class Zoinkifier {
 
     //Encoder values for lining up with the cryptobox in autonomous
     public static final int FAR_STONE_CLOSE_SLOT = 450;
-    public static final int FAR_STONE_MIDDLE_SLOT = 1250;
-    public static final int FAR_STONE_FAR_SLOT = 2050;
-    public static final int CLOSE_STONE_CLOSE_SLOT = 250;
-    public static final int CLOSE_STONE_MIDDLE_SLOT = 1050;
+    public static final int FAR_STONE_MIDDLE_SLOT = 1150;
+    public static final int FAR_STONE_FAR_SLOT = 1850;
+    public static final int CLOSE_STONE_CLOSE_SLOT = 450;
+    public static final int CLOSE_STONE_MIDDLE_SLOT = 1250;
     public static final int CLOSE_STONE_FAR_SLOT = 1850;
+
+    //Sets up a timer for other programs to use
+    public static ElapsedTime timer = new ElapsedTime();
 
     //Empty hardwareMap variable to be filled in the constructor
     private HardwareMap hardwareMap;
@@ -110,14 +114,14 @@ public class Zoinkifier {
 
     //A shortcut to set the intake servos to their normal position
     public void deployIntake() {
-        leftIntakeArm.setPosition(.85);
-        rightIntakeArm.setPosition(.90);
+        leftIntakeArm.setPosition(.74);
+        rightIntakeArm.setPosition(.73);
     }
 
     //A shortcut to move the intake servos all the way out
     public void farOut() {
-        leftIntakeArm.setPosition(.95);
-        rightIntakeArm.setPosition(1);
+        leftIntakeArm.setPosition(.9);
+        rightIntakeArm.setPosition(.9);
     }
 
     //A shortcut for running the intake motors, put intake wheel powers in for parameters

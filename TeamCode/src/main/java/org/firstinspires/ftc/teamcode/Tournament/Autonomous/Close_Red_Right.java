@@ -4,13 +4,17 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.Tournament.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
 @Autonomous(name = "Close Red Auto Right", group = "Autonomous")
 public class Close_Red_Right extends LinearOpMode {
 
     Zoinkifier robot;
-    int strafeDistance = robot.FAR_STONE_CLOSE_SLOT;
+    int strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
 
     @Override
     public void runOpMode() {
@@ -35,7 +39,7 @@ public class Close_Red_Right extends LinearOpMode {
         robot.flipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Initializes the jewel arm servos
-        robot.bottomServo.setPosition(0.03);
+        robot.bottomServo.setPosition(0);
         robot.topServo.setPosition(0.25);
 
         telemetry.addData("Ready to begin", true);
@@ -75,7 +79,7 @@ public class Close_Red_Right extends LinearOpMode {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation < Math.toRadians(1) && opModeIsActive());
+        while(robot.yRotation < Math.toRadians(2) && opModeIsActive());
         telemetry.addData("State", "Drive until not Tilted");
         telemetry.update();
         sleep(250);
@@ -83,7 +87,7 @@ public class Close_Red_Right extends LinearOpMode {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation > Math.toRadians(1) && opModeIsActive());
+        while(robot.yRotation > Math.toRadians(2) && opModeIsActive());
         robot.brake();
 
         //Drives forward using the encoders
