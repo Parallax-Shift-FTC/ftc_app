@@ -6,6 +6,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -36,7 +37,7 @@ public class Zoinkifier {
     public static final double DRIVE_POWER = 0.65;
     //Powers for the flipper and intake motors
     public static final double FLIPPER_POWER = .5;
-    public static final double INTAKE_POWER = 1;
+    public static final double INTAKE_POWER = -1;
 
     //Encoder values for lining up with the cryptobox in autonomous
     public static final int FAR_STONE_CLOSE_SLOT = 450;
@@ -70,7 +71,6 @@ public class Zoinkifier {
         //positive value
         fleft.setDirection(DcMotor.Direction.REVERSE);
         bleft.setDirection(DcMotor.Direction.REVERSE);
-        lintake.setDirection(DcMotor.Direction.REVERSE);
 
         //Setting up our servos
         leftIntakeArm= hardwareMap.servo.get("left intake arm");
@@ -115,7 +115,7 @@ public class Zoinkifier {
     //A shortcut to set the intake servos to their normal position
     public void deployIntake() {
         leftIntakeArm.setPosition(.74);
-        rightIntakeArm.setPosition(.73);
+        rightIntakeArm.setPosition(.80);
     }
 
     //A shortcut to move the intake servos all the way out

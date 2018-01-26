@@ -70,6 +70,8 @@ public class FC_Tele_Op extends OpMode {
             robot.flipper.setPower(robot.FLIPPER_POWER);
         else if (gamepad1.dpad_down)
             robot.flipper.setPower(-robot.FLIPPER_POWER);
+        else if(gamepad1.dpad_right)
+            robot.flipper.setPower(1);
         else
             robot.flipper.setPower(0);
 
