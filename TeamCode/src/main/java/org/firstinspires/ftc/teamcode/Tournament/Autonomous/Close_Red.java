@@ -73,11 +73,11 @@ public class Close_Red extends LinearOpMode {
         if(vuMark == RelicRecoveryVuMark.UNKNOWN)
             strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
         if(vuMark == RelicRecoveryVuMark.RIGHT)
-            strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
+            strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
         else if(vuMark == RelicRecoveryVuMark.CENTER)
             strafeDistance = robot.CLOSE_STONE_MIDDLE_SLOT;
         else
-            strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
+            strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
         vuforia.close();
 
         //Moves the sensor into position and takes a reading from the color sensor, then hits the
