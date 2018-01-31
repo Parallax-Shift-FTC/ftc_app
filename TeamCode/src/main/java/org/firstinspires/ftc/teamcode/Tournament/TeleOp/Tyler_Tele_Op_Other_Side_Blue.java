@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
 
 @TeleOp(name = "Whack TeleOp Blue", group = "Zoinkifier")
-public class FC_Tele_Op_Other_Side_Blue extends OpMode {
+public class Tyler_Tele_Op_Other_Side_Blue extends OpMode {
 
     Zoinkifier robot;
 

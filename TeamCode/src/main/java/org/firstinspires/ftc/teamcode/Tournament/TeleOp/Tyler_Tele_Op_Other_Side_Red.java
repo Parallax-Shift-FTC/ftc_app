@@ -6,13 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@TeleOp(name = "TeleOp", group = "Zoinkifier")
-public class FC_Tele_Op extends OpMode {
+
+@TeleOp(name = "Whack TeleOp Red", group = "Zoinkifier")
+public class Tyler_Tele_Op_Other_Side_Red extends OpMode {
 
     Zoinkifier robot;
 
-    //The angle that the robot should drive at relative to its starting position, PI/2 corresponds to straight forward
-    double angleFromDriver = Math.PI / 2;
+    //The angle that the robot should drive at relative to its starting position, Pi/2 corresponds to straight forward
+    double angleFromDriver = 0;
     boolean firstTime = true;
 
     @Override   //Sets up the robot class so we can use its hardware map and variables

@@ -33,11 +33,11 @@ public class Zoinkifier {
     //modify, DRIVE_POWER is the main cruising speed, and SLOW_POWER is for aligning with the
     //cryptobox
     public double currentDrivePower = 1;
-    public static final double SLOW_POWER = 0.3;
+    public static final double SLOW_POWER = 0.25;
     public static final double DRIVE_POWER = 0.65;
     //Powers for the flipper and intake motors
     public static final double FLIPPER_POWER = .5;
-    public static final double INTAKE_POWER = -1;
+    public static final double INTAKE_POWER = -.9;
 
     //Encoder values for lining up with the cryptobox in autonomous
     public static final int FAR_STONE_CLOSE_SLOT = 450;
@@ -114,8 +114,8 @@ public class Zoinkifier {
 
     //A shortcut to set the intake servos to their normal position
     public void deployIntake() {
-        leftIntakeArm.setPosition(.74);
-        rightIntakeArm.setPosition(.80);
+        leftIntakeArm.setPosition(.77);
+        rightIntakeArm.setPosition(.84);
     }
 
     //A shortcut to move the intake servos all the way out
