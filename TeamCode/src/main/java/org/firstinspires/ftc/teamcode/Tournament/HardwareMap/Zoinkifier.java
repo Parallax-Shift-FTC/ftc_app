@@ -32,12 +32,12 @@ public class Zoinkifier {
     //Variables for our drive power in tele-op; currentDrivePower is for individual instances to
     //modify, DRIVE_POWER is the main cruising speed, and SLOW_POWER is for aligning with the
     //cryptobox
-    public double currentDrivePower = 1;
     public static final double SLOW_POWER = 0.25;
-    public static final double DRIVE_POWER = 0.65;
+    public static final double DRIVE_POWER = 1;
+    public double currentDrivePower = DRIVE_POWER;
     //Powers for the flipper and intake motors
-    public static final double FLIPPER_POWER = .5;
-    public static final double INTAKE_POWER = -.9;
+    public static final double FLIPPER_POWER = .45;
+    public static final double INTAKE_POWER = -1;
 
     //Encoder values for lining up with the cryptobox in autonomous
     public static final int FAR_STONE_CLOSE_SLOT = 450;
@@ -114,8 +114,8 @@ public class Zoinkifier {
 
     //A shortcut to set the intake servos to their normal position
     public void deployIntake() {
-        leftIntakeArm.setPosition(.77);
-        rightIntakeArm.setPosition(.84);
+        leftIntakeArm.setPosition(.755);
+        rightIntakeArm.setPosition(.845);
     }
 
     //A shortcut to move the intake servos all the way out

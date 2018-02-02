@@ -35,21 +35,10 @@ public class Tyler_Tele_Op_Other_Side_Blue extends OpMode {
             firstTime = false;
         }
 
-        //Puts the robot in slow mode while the left dpad button is held
-        if(gamepad1.dpad_left && robot.currentDrivePower != robot.SLOW_POWER) {
-            robot.currentDrivePower = robot.SLOW_POWER;
-            robot.fleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.fright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.bleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-        if(!gamepad1.dpad_left && robot.currentDrivePower == robot.SLOW_POWER) {
+        if(gamepad1.dpad_left)
+            robot.currentDrivePower = 0.7;
+        else if (gamepad1.dpad_right)
             robot.currentDrivePower = robot.DRIVE_POWER;
-            robot.fleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.fright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.bleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            robot.bright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        }
 
         //Moves the intake wheels out further when x is pressed and back to normal when b is pressed
         if(gamepad1.x)
@@ -64,15 +53,13 @@ public class Tyler_Tele_Op_Other_Side_Blue extends OpMode {
         else if (gamepad1.right_bumper)
             robot.runIntake(- robot.INTAKE_POWER, - robot.INTAKE_POWER);
         else
-            robot.runIntake(0.25 * (gamepad1.left_trigger - gamepad1.right_trigger), 0.25 * ( - gamepad1.left_trigger + gamepad1.right_trigger));
+            robot.runIntake(0.15 * (gamepad1.left_trigger - gamepad1.right_trigger), 0.15 * ( - gamepad1.left_trigger + gamepad1.right_trigger));
 
         //Dpad up and down control the flipper
         if (gamepad1.dpad_up)
             robot.flipper.setPower(robot.FLIPPER_POWER);
         else if (gamepad1.dpad_down)
             robot.flipper.setPower(-robot.FLIPPER_POWER);
-        else if(gamepad1.dpad_right)
-            robot.flipper.setPower(1);
         else
             robot.flipper.setPower(0);
 
