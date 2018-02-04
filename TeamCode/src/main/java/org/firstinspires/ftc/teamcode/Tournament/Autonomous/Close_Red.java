@@ -66,15 +66,15 @@ public class Close_Red extends LinearOpMode {
         //times out and just goes for the closest slot
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
         robot.timer.reset();
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }
-        if(vuMark == RelicRecoveryVuMark.UNKNOWN)
+        if (vuMark == RelicRecoveryVuMark.UNKNOWN)
             strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
-        if(vuMark == RelicRecoveryVuMark.RIGHT)
+        if (vuMark == RelicRecoveryVuMark.RIGHT)
             strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
-        else if(vuMark == RelicRecoveryVuMark.CENTER)
+        else if (vuMark == RelicRecoveryVuMark.CENTER)
             strafeDistance = robot.CLOSE_STONE_MIDDLE_SLOT;
         else
             strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
@@ -90,9 +90,9 @@ public class Close_Red extends LinearOpMode {
         telemetry.addData("Red", robot.colorSensor.red());
         telemetry.addData("Blue", robot.colorSensor.blue());
         telemetry.update();
-        if(robot.colorSensor.red() > robot.colorSensor.blue())
+        if (robot.colorSensor.red() > robot.colorSensor.blue())
             robot.topServo.setPosition(.86);
-        else if(robot.colorSensor.red() < robot.colorSensor.blue())
+        else if (robot.colorSensor.red() < robot.colorSensor.blue())
             robot.topServo.setPosition(.60);
         sleep(1000);
         robot.bottomServo.setPosition(0.55);
@@ -103,14 +103,14 @@ public class Close_Red extends LinearOpMode {
 
         //Starts driving, then uses the rotation about the y axis to tell when the robot has gotten
         //off the balancing stone and stops
-        robot.drive(-.2,-.2,-.2,-.2);
+        robot.drive(-.2, -.2, -.2, -.2);
         telemetry.addData("State", "Drive until Tilted");
         telemetry.update();
         do {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation < Math.toRadians(2) && opModeIsActive());
+        while (robot.yRotation < Math.toRadians(2) && opModeIsActive());
         telemetry.addData("State", "Drive until not Tilted");
         telemetry.update();
         sleep(250);
@@ -118,14 +118,14 @@ public class Close_Red extends LinearOpMode {
             robot.updateGyro();
             idle();
         }
-        while(robot.yRotation > Math.toRadians(2) && opModeIsActive());
+        while (robot.yRotation > Math.toRadians(2) && opModeIsActive());
         robot.brake();
 
         //Drives forward using the encoders
         telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
-        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -400,-400,-400,-400);
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+        robot.setDriveEncoders(-.4, -.4, -.4, -.4, -400, -400, -400, -400);
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
         robot.brake();
 
@@ -139,10 +139,10 @@ public class Close_Red extends LinearOpMode {
         robot.bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.updateGyro();
         double error = robot.heading;
-        while(error > Math.toRadians(6) && opModeIsActive()) {
+        while (error > Math.toRadians(6) && opModeIsActive()) {
             robot.updateGyro();
             error = robot.heading;
-            robot.drive( .1 + error * 0.4 / (Math.PI/2), - .1 - error * 0.4 / (Math.PI/2),  .1 + error * 0.4 / (Math.PI/2), - .1 - error * 0.4 / (Math.PI/2));
+            robot.drive(.1 + error * 0.4 / (Math.PI / 2), -.1 - error * 0.4 / (Math.PI / 2), .1 + error * 0.4 / (Math.PI / 2), -.1 - error * 0.4 / (Math.PI / 2));
             idle();
         }
         robot.brake();
@@ -150,8 +150,8 @@ public class Close_Red extends LinearOpMode {
         //Drives forward using the encoders
         telemetry.addData("State", "Drive Forward With Encoders");
         telemetry.update();
-        robot.setDriveEncoders(-.4,-.4,-.4,-.4, -900,-900,-900,-900);
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+        robot.setDriveEncoders(-.4, -.4, -.4, -.4, -900, -900, -900, -900);
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
         robot.brake();
 
@@ -167,25 +167,25 @@ public class Close_Red extends LinearOpMode {
         //Flips the cube up
         robot.flipper.setTargetPosition(500);
         robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
-        while(robot.flipper.isBusy() && opModeIsActive())
+        while (robot.flipper.isBusy() && opModeIsActive())
             idle();
         robot.flipper.setPower(0);
 
         //Drives back, goes forward again to hit the cube in, then drives back again to park
-        robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+        robot.setDriveEncoders(.2, .2, .2, .2, 500, 500, 500, 500);
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
-        robot.setDriveEncoders(-.2,-.2,-.2,-.2, -600, -600, -600, -600);
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+        robot.setDriveEncoders(-.2, -.2, -.2, -.2, -600, -600, -600, -600);
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
-        robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
-        while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+        robot.setDriveEncoders(.2, .2, .2, .2, 500, 500, 500, 500);
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
 
         //Brings the flipper back down
         robot.flipper.setTargetPosition(0);
-        robot.flipper.setPower(-robot.FLIPPER_POWER * 1/2);
-        while(robot.flipper.isBusy() && opModeIsActive())
+        robot.flipper.setPower(-robot.FLIPPER_POWER * 1 / 2);
+        while (robot.flipper.isBusy() && opModeIsActive())
             idle();
         robot.flipper.setPower(0);
     }

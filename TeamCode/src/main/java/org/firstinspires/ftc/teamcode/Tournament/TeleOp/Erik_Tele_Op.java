@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
-.
+@Disabled
 @TeleOp(name = "Erik TeleOp", group = "Zoinkifier")
 public class Erik_Tele_Op extends OpMode {
 

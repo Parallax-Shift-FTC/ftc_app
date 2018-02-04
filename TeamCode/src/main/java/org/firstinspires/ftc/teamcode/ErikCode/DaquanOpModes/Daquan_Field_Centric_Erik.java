@@ -50,12 +50,9 @@ public class Daquan_Field_Centric_Erik extends OpMode
         robot.updateGyro();
 
         jTheta = (double) Math.atan2(-gamepad1.left_stick_y, gamepad1.left_stick_x);
-
         jp = (double) Math.sqrt(gamepad1.left_stick_x * gamepad1.left_stick_x + gamepad1.left_stick_y * gamepad1.left_stick_y);
-
         if(jp > 1)
             jp = 1;
-
         theta = (jTheta + angleFromDriver - robot.heading);
 
         robot.drive(

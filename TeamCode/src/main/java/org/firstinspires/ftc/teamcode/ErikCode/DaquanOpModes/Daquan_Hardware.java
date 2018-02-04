@@ -82,8 +82,8 @@ public class Daquan_Hardware {
         bright.setPower(ClipValue(br));
     }
 
-    public void updateGyro() {
-        //May not have to make negative? Make it so that turning is CCW
+    public void updateGyro()
+    {
         heading = gyro.getAngularOrientation().toAxesReference(AxesReference.INTRINSIC).toAxesOrder(AxesOrder.ZYX).firstAngle;
         if (heading > 0) {
             heading = heading + 0;
