@@ -66,7 +66,7 @@ public class Far_Red extends LinearOpMode {
         //times out and just goes for the closest slot
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
         robot.timer.reset();
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
+        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 5 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }

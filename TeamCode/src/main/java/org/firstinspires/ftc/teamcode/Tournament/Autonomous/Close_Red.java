@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Tournament.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@Autonomous(name = "Close Red Auto", group = "Autonomous")
+@Autonomous(name = "Close Red Auto Multiglyph", group = "Autonomous")
 public class Close_Red extends LinearOpMode {
 
     Zoinkifier robot;
@@ -66,7 +66,7 @@ public class Close_Red extends LinearOpMode {
         //times out and just goes for the closest slot
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
         robot.timer.reset();
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
+        while (vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 5 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }
@@ -188,5 +188,85 @@ public class Close_Red extends LinearOpMode {
         while (robot.flipper.isBusy() && opModeIsActive())
             idle();
         robot.flipper.setPower(0);
+
+        if(robot.timer.seconds() < 17) {
+            robot.farOut();
+            strafeDistance = 2900;
+            robot.flipper.setTargetPosition(0);
+            robot.flipper.setPower(-robot.FLIPPER_POWER * 1 / 2);
+            while (robot.flipper.isBusy() && opModeIsActive())
+                idle();
+            robot.flipper.setPower(0);
+            robot.setDriveEncoders(1, -1, -1, 1, strafeDistance, strafeDistance, strafeDistance, strafeDistance);
+            robot.rintake.setPower(robot.INTAKE_POWER);
+            robot.lintake.setPower(robot.INTAKE_POWER);
+            while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive()) {
+                idle();
+            }
+            robot.deployIntake();
+            sleep(750);
+            robot.brake();
+            robot.setDriveEncoders(1, -1, -1, 1, -strafeDistance/2, -strafeDistance/2, -strafeDistance/2, -strafeDistance/2);
+            while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive()) {
+                idle();
+            }
+            robot.brake();
+            robot.rintake.setPower(0);
+            robot.lintake.setPower(0);
+            robot.farOut();
+            robot.setDriveEncoders(.2,.2,.2,.2, -1000, 1000, -1000, 1000);
+            while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+                idle();
+
+            robot.deployIntake();
+
+            robot.rintake.setPower(robot.INTAKE_POWER*.6);
+            robot.lintake.setPower(robot.INTAKE_POWER*.6);
+            sleep(1000);
+
+            robot.setDriveEncoders(.6,.6,.6,.6, 1000, -1000, 1000, -1000);
+            while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+                idle();
+            robot.rintake.setPower(0);
+            robot.lintake.setPower(0);
+            robot.rintake.setPower(-robot.INTAKE_POWER*.125);
+            robot.lintake.setPower(-robot.INTAKE_POWER*-.125);
+            sleep(1500);
+            robot.lintake.setPower(-robot.INTAKE_POWER*.125/2);
+            robot.rintake.setPower(-robot.INTAKE_POWER*-.125/2);
+            sleep(500);
+            robot.rintake.setPower(robot.INTAKE_POWER);
+            robot.lintake.setPower(robot.INTAKE_POWER);
+            sleep(1000);
+            robot.rintake.setPower(0);
+            robot.lintake.setPower(0);
+
+            //Drives back to cryptobox
+            robot.setDriveEncoders(-0.6, -0.6, -.6, -.6, -1800, -1800, -1800, -1800);
+            while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive()) {
+                idle();
+            }
+            robot.brake();
+            sleep(250);
+
+            //Flips the cube up
+            robot.flipper.setTargetPosition(500);
+            robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
+            while(robot.flipper.isBusy() && opModeIsActive())
+                idle();
+            robot.flipper.setPower(0);
+            sleep(250);
+            //Drives back, goes forward again to hit the cube in, then drives back again to park
+            robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
+            while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+                idle();
+
+            //Brings the flipper back down
+            robot.flipper.setTargetPosition(0);
+            robot.flipper.setPower(-robot.FLIPPER_POWER * 1/2);
+            while(robot.flipper.isBusy() && opModeIsActive())
+                idle();
+            robot.flipper.setPower(0);
+        }
     }
 }

@@ -54,7 +54,7 @@ public class Far_Blue extends LinearOpMode {
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
         robot.timer.reset();
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
+        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 5 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }
