@@ -10,14 +10,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Tournament.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@Autonomous(name = "Far Blue Vu. Auto", group = "Autonomous")
+@Autonomous(name = "Far Blue Auto", group = "Autonomous")
 public class Far_Blue extends LinearOpMode {
 
     Zoinkifier robot;
     ClosableVuforiaLocalizer vuforia;
-    final int LEFT = 400;
-    final int CENNTER = 1200;
-    final int RIGHT = 2000;
     int strafeDistance;
 
     @Override
@@ -56,17 +53,20 @@ public class Far_Blue extends LinearOpMode {
         waitForStart();
 
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
-        while(vuMark == RelicRecoveryVuMark.UNKNOWN && opModeIsActive()) {
+        robot.timer.reset();
+        while(vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 10 && opModeIsActive()) {
             vuMark = RelicRecoveryVuMark.from(relictrackable);
             idle();
         }
-
+        if(vuMark == RelicRecoveryVuMark.UNKNOWN)
+            strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
         if(vuMark == RelicRecoveryVuMark.RIGHT)
-            strafeDistance = RIGHT;
+            strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
         else if(vuMark == RelicRecoveryVuMark.CENTER)
-            strafeDistance = CENNTER;
+            strafeDistance = robot.CLOSE_STONE_MIDDLE_SLOT;
         else
-            strafeDistance = LEFT;
+            strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
+        vuforia.close();
 
         robot.deployIntake();
 
