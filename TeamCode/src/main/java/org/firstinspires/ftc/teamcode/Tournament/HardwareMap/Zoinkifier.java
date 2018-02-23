@@ -44,8 +44,8 @@ public class Zoinkifier {
     public static final int FAR_STONE_MIDDLE_SLOT = 1050;
     public static final int FAR_STONE_FAR_SLOT = 1700;
     public static final int CLOSE_STONE_CLOSE_SLOT = 300;
-    public static final int CLOSE_STONE_MIDDLE_SLOT = 1050;
-    public static final int CLOSE_STONE_FAR_SLOT = 1700;
+    public static final int CLOSE_STONE_MIDDLE_SLOT = 950;
+    public static final int CLOSE_STONE_FAR_SLOT = 1600;
 
     //Sets up a timer for other programs to use
     public static ElapsedTime timer = new ElapsedTime();

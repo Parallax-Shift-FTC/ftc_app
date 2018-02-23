@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Tournament.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -11,12 +10,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Tournament.ClosableVuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.Tournament.HardwareMap.Zoinkifier;
 
-@Disabled
-@Autonomous(name = "Close Red MultiGlyph", group = "Autonomous")
-public class iffyAuto extends LinearOpMode {
+@Autonomous(name = "Close Red Test", group = "Autonomous")
+public class Close_Red_Test extends LinearOpMode {
 
     Zoinkifier robot;
-    ClosableVuforiaLocalizer vuforia;
     int strafeDistance;
 
     @Override
@@ -45,42 +42,15 @@ public class iffyAuto extends LinearOpMode {
         robot.bottomServo.setPosition(0);
         robot.topServo.setPosition(0.25);
 
-        //Sets up vuforia
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        ClosableVuforiaLocalizer.Parameters parameters = new ClosableVuforiaLocalizer.Parameters(cameraMonitorViewId);
-        parameters.vuforiaLicenseKey = "Aa07QPX/////AAAAGT4IBGftwkAmodz5uX1NKehqWSuZYAizMXyJgDjbMQz+h5mPdKPRRA9id11R2ad9e3w3E6aS1Nep0aXgwwqRtAAmh6tizyQQZRM5qF+foaOh9zbuyAis/ANMODT0X5fAo3J6DqPNlOT9Es04EMKR5rIGhrb91rn3X+ferq2phtQ/PhQGHt44rkhNXSI1OV2GaY4BErnIgSktLZB6bWf49Jd3RtnybC9BfsuOv/2re0pEiGAiF+GyTV5pvuyVVFXFMKaiIR+aDe8qBpKV5z+ZUIWUC+z989ERqh9SKWdfJkOJt6glYFx/fEy3o4g8HwYfVbU+xU1fxufN+M3A2uZZaSSowVbbDDgr9CGxSd6/Dskg";
-        parameters.cameraDirection = ClosableVuforiaLocalizer.CameraDirection.BACK;
-        this.vuforia = new ClosableVuforiaLocalizer(parameters);
-        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relictrackable = relicTrackables.get(0);
-        relictrackable.setName("relicVuMark");
-        relicTrackables.activate();
-
         telemetry.addData("Ready to begin", true);
         telemetry.update();
         waitForStart();
 
-
+        //Puts the intake in its starting position
         robot.deployIntake();
 
-        //Waits until the robot scans the vumark, then figures out what cryptobox to put the glyph
-        //in anc closes vuforia to conserve battery. If vuforia doesn't work after 5 seconds, it
-        //times out and just goes for the closest slot
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relictrackable);
-        robot.timer.reset();
-        while (vuMark == RelicRecoveryVuMark.UNKNOWN && robot.timer.seconds() < 5 && opModeIsActive()) {
-            vuMark = RelicRecoveryVuMark.from(relictrackable);
-            idle();
-        }
-        if (vuMark == RelicRecoveryVuMark.UNKNOWN)
-            strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
-        if (vuMark == RelicRecoveryVuMark.RIGHT)
-            strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
-        else if (vuMark == RelicRecoveryVuMark.CENTER)
-            strafeDistance = robot.CLOSE_STONE_MIDDLE_SLOT;
-        else
-            strafeDistance = robot.CLOSE_STONE_FAR_SLOT;
-        vuforia.close();
+
+        strafeDistance = robot.CLOSE_STONE_CLOSE_SLOT;
 
         //Moves the sensor into position and takes a reading from the color sensor, then hits the
         //correct colored jewel and folds the jewel arm back up
@@ -170,11 +140,46 @@ public class iffyAuto extends LinearOpMode {
         robot.flipper.setTargetPosition(500);
         robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
         while (robot.flipper.isBusy() && opModeIsActive())
-            telemetry.addData("Blue", robot.flipper.getCurrentPosition());
-        telemetry.update();
             idle();
         robot.flipper.setPower(0);
 
+        strafeDistance = robot.CLOSE_STONE_MIDDLE_SLOT - strafeDistance;
+
+        //Strafes sideways the correct amount to line up with the correct slot
+        telemetry.addData("State", "Drive Sideways With Encoders");
+        telemetry.update();
+        //Drives to the correct place using the encoders
+        robot.setDriveEncoders(.2, -.2, -.2, .2, strafeDistance, -strafeDistance, -strafeDistance, strafeDistance);
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+            idle();
+        robot.brake();
+
+        //Flips the cube up
+        robot.flipper.setTargetPosition(500);
+        robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
+        while (robot.flipper.isBusy() && opModeIsActive())
+            idle();
+        robot.flipper.setPower(0);
+
+        strafeDistance = robot.CLOSE_STONE_FAR_SLOT - strafeDistance;
+
+        //Strafes sideways the correct amount to line up with the correct slot
+        telemetry.addData("State", "Drive Sideways With Encoders");
+        telemetry.update();
+        //Drives to the correct place using the encoders
+        robot.setDriveEncoders(.2, -.2, -.2, .2, strafeDistance, -strafeDistance, -strafeDistance, strafeDistance);
+        while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
+            idle();
+        robot.brake();
+
+        //Flips the cube up
+        robot.flipper.setTargetPosition(500);
+        robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
+        while (robot.flipper.isBusy() && opModeIsActive())
+            idle();
+        robot.flipper.setPower(0);
+
+        //Drives back, goes forward again to hit the cube in, then drives back again to park
         robot.setDriveEncoders(.2, .2, .2, .2, 500, 500, 500, 500);
         while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
@@ -184,7 +189,13 @@ public class iffyAuto extends LinearOpMode {
         robot.setDriveEncoders(.2, .2, .2, .2, 500, 500, 500, 500);
         while (robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
             idle();
-        robot.brake();
+
+        //Brings the flipper back down
+        robot.flipper.setTargetPosition(0);
+        robot.flipper.setPower(-robot.FLIPPER_POWER * 1 / 2);
+        while (robot.flipper.isBusy() && opModeIsActive())
+            idle();
+        robot.flipper.setPower(0);
 
         if(robot.timer.seconds() < 17) {
             robot.farOut();
@@ -252,11 +263,11 @@ public class iffyAuto extends LinearOpMode {
             while(robot.flipper.isBusy() && opModeIsActive())
                 idle();
             robot.flipper.setPower(0);
-                sleep(250);
+            sleep(250);
             //Drives back, goes forward again to hit the cube in, then drives back again to park
             robot.setDriveEncoders(.2,.2,.2,.2, 500, 500, 500, 500);
             while(robot.fleft.isBusy() && robot.fright.isBusy() && opModeIsActive())
-            idle();
+                idle();
 
             //Brings the flipper back down
             robot.flipper.setTargetPosition(0);
@@ -266,5 +277,4 @@ public class iffyAuto extends LinearOpMode {
             robot.flipper.setPower(0);
         }
     }
-
 }
