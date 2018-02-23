@@ -164,7 +164,7 @@ public class Close_Blue extends LinearOpMode {
             idle();
         robot.brake();
 
-        //Flips the cube up
+        //Flips the cube up into the cryptobox
         robot.flipper.setTargetPosition(500);
         robot.flipper.setPower(robot.FLIPPER_POWER * 0.75);
         while(robot.flipper.isBusy() && opModeIsActive())
